@@ -1,7 +1,7 @@
 export default async function IndexPage() {
   return (
     <div>
-      <h1 className="font-extrabold">Hello World</h1>
+      <h1>Index Page</h1>
     </div>
   );
 }

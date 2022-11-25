@@ -9,17 +9,18 @@ export default async function IndexLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <html lang="en">
+      <head>
+        <title>Forza Horizon Timeattack</title>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+
       <body>
-        <main>
-          <nav>
-            {/* <Link href="/">Home</Link>
-            <Link href="/tracks">Racetracks</Link> */}
-            <Header />
-          </nav>
-          {children}
-        </main>
+        <header>
+          <Header />
+        </header>
+        <main>{children}</main>
       </body>
-    </div>
+    </html>
   );
 }
