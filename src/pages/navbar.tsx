@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Header() {
+export default function Navbar() {
   return (
     <nav>
       <div className="flex flex-nowrap">

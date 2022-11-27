@@ -1,6 +1,5 @@
+import { Track } from "@prisma/client";
 import Link from "next/link";
-import mongo from "../../lib/mongo";
-import Track, { ITrack } from "../../models/track";
 
 export default function TracksPage() {
   // await mongo();
@@ -23,14 +22,14 @@ export default function TracksPage() {
   // TODO add fetch
   //const tracks = Track.find();
 
-  const tracks: ITrack[] = [
+  const tracks: Track[] = [
     {
       id: "1",
       name: "Track 1",
       category: "Category 1",
       type: "Road Racing",
       length: 6.9,
-      share_code: "123123123",
+      shareCode: "123123123",
     },
     {
       id: "2",
@@ -38,7 +37,7 @@ export default function TracksPage() {
       category: "Category 1",
       type: "Road Racing",
       length: 6.9,
-      share_code: "123123123",
+      shareCode: "123123123",
     },
     {
       id: "3",
@@ -46,7 +45,7 @@ export default function TracksPage() {
       category: "Category 1",
       type: "Road Racing",
       length: 6.9,
-      share_code: "123123123",
+      shareCode: "123123123",
     },
   ];
 
