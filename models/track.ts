@@ -1,8 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
-interface ITrack {
+export interface ITrack {
+  id: String;
   name: String;
+  category: String;
   type: String;
+  length: number;
+  share_code: String;
 }
 
 const trackSchema = new Schema<ITrack>({
@@ -16,4 +20,4 @@ const trackSchema = new Schema<ITrack>({
   },
 });
 
-export default mongoose.models.Pet || mongoose.model("Pet", trackSchema);
+export default mongoose.models.Pet || mongoose.model("Track", trackSchema);
