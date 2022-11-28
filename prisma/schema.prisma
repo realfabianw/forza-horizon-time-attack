@@ -55,6 +55,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  entries       Entry[]
 }
 
 model VerificationToken {
@@ -73,6 +74,21 @@ model Track {
   type        String
   shareCode   String?
   length      Float?
+  entries     Entry[]
+}
+
+model Entry {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  trackId           String
+  track             Track @relation(fields: [trackId], references: [id])
+  userId            String
+  user              User @relation(fields:[userId], references: [id])
+  manufacturer      String
+  model             String
+  year              Int
+  performancePoints Int
+  time              Float
+  shareCode         String
 }
 
 

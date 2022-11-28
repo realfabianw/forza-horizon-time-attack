@@ -6,15 +6,13 @@ export const tracksRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.track.findMany();
   }),
-  getById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.prisma.track.findFirst({
-        where: {
-          id: input.id,
-        },
-      });
-    }),
+  getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.prisma.track.findFirst({
+      where: {
+        id: input,
+      },
+    });
+  }),
   getAllCategories: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.track
       .findMany({
