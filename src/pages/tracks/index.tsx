@@ -1,4 +1,3 @@
-import { Track } from "@prisma/client";
 import Link from "next/link";
 import { trpc } from "../../utils/trpc";
 
@@ -19,8 +18,6 @@ function buildFilter(categories: String[] | undefined) {
 }
 
 export default function TracksPage() {
-  // await mongo();
-
   const filters: CategoryFilter[] = buildFilter(
     trpc.tracks.getAllCategories.useQuery().data!
   );

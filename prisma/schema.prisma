@@ -92,7 +92,7 @@ model Entry {
   year              Int
   performancePoints Int
   time              Float
-  shareCode         String
+  shareCode         String?
 }
 
 

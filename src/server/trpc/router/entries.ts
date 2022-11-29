@@ -8,9 +8,17 @@ export const entriesRouter = router({
     return ctx.prisma.entry.findMany();
   }),
 
+  getByTrackId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.prisma.entry.findMany({
+      where: {
+        trackId: input,
+      },
+    });
+  }),
+
   insert: protectedProcedure
     .input(EntryCreateOneSchema)
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.entry.create(input);
     }),
 });
