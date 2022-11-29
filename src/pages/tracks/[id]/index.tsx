@@ -6,7 +6,7 @@ export default function TrackPage() {
   console.log(router);
   const id: string = String(router.query.id);
 
-  const track = trpc.tracks.getById.useQuery({ id: id });
+  const track = trpc.tracks.getById.useQuery(id);
 
   return (
     <div>
