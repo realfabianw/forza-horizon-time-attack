@@ -37,12 +37,21 @@ export default function TracksPage() {
       <div className="flex flex-wrap">
         {tracks.data &&
           tracks.data.map((track, index) => (
-            <div key={index} className="rounded border bg-white/10 p-5">
-              <Link href={"/tracks/" + track.id}>
-                <div>{track.name}</div>
-                <div>{track.category}</div>
-              </Link>
-            </div>
+            <Link
+              key={index}
+              href={"/tracks/" + track.id}
+              className="rounded border bg-white/10 p-5"
+            >
+              <div>{track.name}</div>
+              <div>{track.category}</div>
+              {track.length && <div>{track.length} km</div>}
+
+              <img
+                src={"./" + track.category + " " + track.type + ".png"}
+                alt={track.category + " " + track.type}
+                className="h-auto w-12 object-contain"
+              />
+            </Link>
           ))}
       </div>
     </div>
