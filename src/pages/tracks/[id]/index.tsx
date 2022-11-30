@@ -6,10 +6,10 @@ import { Fragment, useState } from "react";
 import { number } from "zod";
 import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
 import { trpc } from "../../../utils/trpc";
+import EntryComponent from "./component.element.entry";
 
 export default function TrackPage() {
   const router = useRouter();
-  console.log(router);
   const id: string = String(router.query.id);
 
   const track = trpc.tracks.getById.useQuery(id);
@@ -30,19 +30,6 @@ export default function TrackPage() {
   async function handleAddEntryForm(e: any) {
     e.preventDefault();
 
-    console.log(e);
-
-    // let entry = {
-    //   trackId: id,
-    //   userId: "123",
-    //   manufacturer: e.target.manufacturer.value,
-    //   model: e.target.model.value,
-    //   year: e.target.year.value,
-    //   performancePoints: e.target.performancePoints.value as number,
-    //   time: e.target.time.value as number,
-    //   shareCode: e.target.shareCode.value as number,
-    // };
-
     let entry = {
       track: {
         connect: {
@@ -62,32 +49,51 @@ export default function TrackPage() {
       shareCode: e.target.shareCode.value as string,
     };
 
-    let parse = EntryCreateOneSchema.parse({ data: entry });
-
-    addEntry.mutate(parse);
-
+    addEntry.mutate(EntryCreateOneSchema.parse({ data: entry }));
+    // TODO refresh
     closeModal();
   }
 
-  return (
-    <>
-      <div>
-        <div>{track.data && track.data.name}</div>
+  function renderButton() {
+    if (sessionData?.user) {
+      return (
         <button
           type="button"
           onClick={openModal}
-          className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
           Add Time
         </button>
-        {entries &&
-          entries.data?.map((entry, index) => (
-            <div className="rounded border bg-white/10 p-5">
-              <div>{entry.manufacturer}</div>
-              <div>{entry.model}</div>
-              <div>{entry.time}</div>
+      );
+    } else {
+      return <div>Please login to add your times</div>;
+    }
+  }
+
+  return (
+    <div className="container mx-auto">
+      <div className="flex flex-col">
+        <div className="flex flex-row">
+          {track.data && (
+            <div className="basis-2/3">
+              <div className="text-xl font-semibold">{track.data.name}</div>
+              <div>
+                {track.data.type} - {track.data.category}
+              </div>
+              {track.data.length && <div>{track.data.length} km</div>}
+              {track.data.shareCode && (
+                <div>Sharecode: {track.data.shareCode}</div>
+              )}
+              <div></div>
             </div>
-          ))}
+          )}
+          {renderButton()}
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
+          {entries &&
+            entries.data?.map((entry, index) => EntryComponent(entry))}
+        </div>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -183,6 +189,6 @@ export default function TrackPage() {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </div>
   );
 }

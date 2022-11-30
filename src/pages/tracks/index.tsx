@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { trpc } from "../../utils/trpc";
+import TrackComponent from "./track.component";
 
 interface CategoryFilter {
   category: String;
@@ -25,7 +26,7 @@ export default function TracksPage() {
   const tracks = trpc.tracks.getAll.useQuery();
 
   return (
-    <div>
+    <div className="container mx-auto">
       <h1>Tracks list</h1>
       {filters &&
         filters.map((filter, index) => (
@@ -34,25 +35,9 @@ export default function TracksPage() {
           </button>
         ))}
       <div>Can't find your track? Add a new one...</div>
-      <div className="flex flex-wrap">
+      <div className="grid grid-cols-3 gap-3">
         {tracks.data &&
-          tracks.data.map((track, index) => (
-            <Link
-              key={index}
-              href={"/tracks/" + track.id}
-              className="rounded border bg-white/10 p-5"
-            >
-              <div>{track.name}</div>
-              <div>{track.category}</div>
-              {track.length && <div>{track.length} km</div>}
-
-              <img
-                src={"./" + track.category + " " + track.type + ".png"}
-                alt={track.category + " " + track.type}
-                className="h-auto w-12 object-contain"
-              />
-            </Link>
-          ))}
+          tracks.data.map((track, index) => TrackComponent(track))}
       </div>
     </div>
   );
