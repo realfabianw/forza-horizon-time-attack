@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { trpc } from "../../utils/trpc";
-import TrackComponent from "./track.component";
+import TrackComponent from "../../components/component.track";
 
 interface CategoryFilter {
   category: String;
