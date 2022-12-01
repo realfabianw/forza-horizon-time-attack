@@ -1,44 +1,39 @@
-import Link from "next/link";
 import { trpc } from "../../utils/trpc";
 import TrackComponent from "../../components/component.track";
-
-interface CategoryFilter {
-  category: String;
-  active: boolean;
-}
-
-function buildFilter(categories: String[] | undefined) {
-  if (!categories) {
-    return [];
-  }
-  let filter: CategoryFilter[] = [];
-  categories.forEach((cat) => {
-    filter.push({ category: cat, active: false });
-  });
-  return filter;
-}
+import { Tab } from "@headlessui/react";
+import { useState } from "react";
 
 export default function TracksPage() {
-  const filters: CategoryFilter[] = buildFilter(
-    trpc.tracks.getAllCategories.useQuery().data!
-  );
-
   const tracks = trpc.tracks.getAll.useQuery();
+  const categories = trpc.tracks.getAllCategories.useQuery();
 
   return (
     <div className="container mx-auto">
-      <h1>Tracks list</h1>
-      {filters &&
-        filters.map((filter, index) => (
-          <button key={index} className="rounded bg-white/10 px-10 py-3">
-            {filter.category}
-          </button>
-        ))}
-      <div>Can't find your track? Add a new one...</div>
-      <div className="grid grid-cols-3 gap-3">
-        {tracks.data &&
-          tracks.data.map((track, index) => TrackComponent(track))}
-      </div>
+      <Tab.Group>
+        <Tab.List className="grid grid-cols-6 justify-between gap-3 py-10">
+          {categories.data &&
+            categories.data.map((category) => (
+              <Tab className="box-border flex h-auto flex-col justify-between rounded border bg-white/10 p-1 shadow">
+                <div className="mx-auto text-xl font-semibold">{category}</div>
+                <img
+                  src={"/" + category + " Sprint.png"}
+                  className="mx-auto h-auto w-12 object-contain"
+                />
+              </Tab>
+            ))}
+        </Tab.List>
+        <Tab.Panels>
+          {categories.data &&
+            categories.data.map((category) => (
+              <Tab.Panel className="grid grid-cols-3 gap-3">
+                {tracks.data &&
+                  tracks.data
+                    .filter((track) => track.category == category)
+                    .map((track) => TrackComponent(track))}
+              </Tab.Panel>
+            ))}
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   );
 }

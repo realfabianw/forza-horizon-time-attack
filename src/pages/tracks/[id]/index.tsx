@@ -66,25 +66,42 @@ export default function TrackPage() {
         </button>
       );
     } else {
-      return <div>Please login to add your times</div>;
+      return (
+        <button
+          disabled
+          type="button"
+          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        >
+          Please login to add your time
+        </button>
+      );
     }
   }
 
   return (
     <div className="container mx-auto">
       <div className="flex flex-col">
-        <div className="flex flex-row">
+        <div className="flex flex-row pb-10">
           {track.data && (
-            <div className="basis-2/3">
-              <div className="text-xl font-semibold">{track.data.name}</div>
-              <div>
-                {track.data.type} - {track.data.category}
+            <img
+              src={"/" + track.data.category + " " + track.data.type + ".png"}
+              alt={track.data.category + " " + track.data.type}
+              className="mx-auto h-auto w-12 object-contain"
+            />
+          )}
+          {track.data && (
+            <div className="flex basis-2/3 flex-col">
+              <div className="mx-auto text-xl font-semibold">
+                {track.data.name}
               </div>
-              {track.data.length && <div>{track.data.length} km</div>}
+              <div className="mx-auto">
+                {track.data.category} - {track.data.type}{" "}
+                {track.data.length && "(" + track.data.length + " km)"}
+              </div>
+
               {track.data.shareCode && (
-                <div>Sharecode: {track.data.shareCode}</div>
+                <div className="mx-auto">Sharecode: {track.data.shareCode}</div>
               )}
-              <div></div>
             </div>
           )}
           {renderButton()}

@@ -10,8 +10,9 @@ export default function TrackComponent(track: Track) {
       <div>
         <h2 className="text-xl font-semibold">{track.name}</h2>
         <div>
-          {track.category} ({track.length && track.length} km)
+          {track.category} {track.length && "(" + track.length + " km)"}
         </div>
+        {track.shareCode && <div>{track.shareCode}</div>}
       </div>
 
       <img
