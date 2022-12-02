@@ -6,12 +6,15 @@ export default function Navbar() {
 
   return (
     <nav>
-      <div className="flex flex-nowrap">
-        <div className="">🏎️</div>
-        <Link href="/">Home</Link>
-        <Link href="/tracks">Racetracks</Link>
+      <div className="flex flex-nowrap justify-between px-10 py-1">
+        <Link
+          href="/"
+          className="rounded-3xl px-5 text-2xl font-bold hover:bg-black/50"
+        >
+          Forza Horizon Time Attack
+        </Link>
         <button
-          className="rounded-full"
+          className="rounded-3xl px-5 text-2xl font-bold hover:bg-black/50"
           onClick={sessionData ? () => signOut() : () => signIn()}
         >
           {sessionData ? "Sign out" : "Sign in"}

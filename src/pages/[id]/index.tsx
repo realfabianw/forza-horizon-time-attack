@@ -1,11 +1,9 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Entry } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
-import { number } from "zod";
-import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
-import { trpc } from "../../../utils/trpc";
+import { EntryCreateOneSchema } from "../../../prisma/generated/schemas/createOneEntry.schema";
+import { trpc } from "../../utils/trpc";
 import EntryComponent from "./component.element.entry";
 
 export default function TrackPage() {

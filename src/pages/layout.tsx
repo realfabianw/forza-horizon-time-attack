@@ -2,7 +2,7 @@ import Head from "next/head";
 import Footer from "../components/component.footer";
 import Navbar from "../components/component.navbar";
 import { Oswald } from "@next/font/google";
-const oswald = Oswald();
+const oswald = Oswald({ style: "normal" });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
