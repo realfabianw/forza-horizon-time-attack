@@ -1,8 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { useReactTable } from "@tanstack/react-table";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { EntryCreateOneSchema } from "../../../prisma/generated/schemas/createOneEntry.schema";
+import EntryTable from "../../components/component.table.entry";
 import { trpc } from "../../utils/trpc";
 import EntryComponent from "./component.element.entry";
 
@@ -11,7 +13,7 @@ export default function TrackPage() {
   const id: string = String(router.query.id);
 
   const track = trpc.tracks.getById.useQuery(id);
-  const entries = trpc.entries.getByTrackId.useQuery(id);
+
   const addEntry = trpc.entries.insert.useMutation();
   const { data: sessionData } = useSession();
 
@@ -105,10 +107,12 @@ export default function TrackPage() {
           {renderButton()}
         </div>
 
-        <div className="grid grid-cols-1 gap-2">
+        {/* <div className="grid grid-cols-1 gap-2">
           {entries &&
             entries.data?.map((entry, index) => EntryComponent(entry))}
-        </div>
+        </div> */}
+
+        <div>{EntryTable(id)}</div>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
