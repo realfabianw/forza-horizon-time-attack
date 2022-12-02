@@ -19,26 +19,26 @@ export default function EntryTable(id: string) {
   const columns = [
     //TODO Accessor Function to retrieve username from userId
     columnHelper.accessor("userId", {
-      header: () => <div>User</div>,
+      header: () => <div className="flex">User</div>,
     }),
     columnHelper.accessor("manufacturer", {
-      header: () => <div>Car Manufacturer</div>,
+      header: () => <div className="flex">Car Manufacturer</div>,
     }),
     columnHelper.accessor("model", {
-      header: () => <div>Car Model</div>,
+      header: () => <div className="flex">Car Model</div>,
     }),
     columnHelper.accessor("year", {
-      header: () => <div>Car Year</div>,
+      header: () => <div className="flex">Car Year</div>,
     }),
     columnHelper.accessor("performancePoints", {
-      header: () => <div>Performance Points</div>,
+      header: () => <div className="flex">Performance Points</div>,
     }),
     columnHelper.accessor((row) => timeToReadable(row.time), {
       id: "readableTime",
-      header: () => <div>Time</div>,
+      header: () => <div className="flex">Time</div>,
     }),
     columnHelper.accessor("shareCode", {
-      header: () => <div>Share Code</div>,
+      header: () => <div className="flex">Share Code</div>,
     }),
   ];
 
@@ -54,7 +54,7 @@ export default function EntryTable(id: string) {
   });
 
   return (
-    <table>
+    <table className="w-full">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
