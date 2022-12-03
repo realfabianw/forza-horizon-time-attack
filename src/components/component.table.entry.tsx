@@ -16,29 +16,33 @@ export default function EntryTable(id: string) {
   const columnHelper = createColumnHelper<Entry>();
   const entries = trpc.entries.getByTrackId.useQuery(id);
 
+  function header(input: string) {
+    return <div className="flex text-xl">{input}</div>;
+  }
+
   const columns = [
     //TODO Accessor Function to retrieve username from userId
     columnHelper.accessor("userId", {
-      header: () => <div className="flex">User</div>,
+      header: () => header("User"),
     }),
     columnHelper.accessor("manufacturer", {
-      header: () => <div className="flex">Car Manufacturer</div>,
+      header: () => header("Car Manufacturer"),
     }),
     columnHelper.accessor("model", {
-      header: () => <div className="flex">Car Model</div>,
+      header: () => header("Car Model"),
     }),
     columnHelper.accessor("year", {
-      header: () => <div className="flex">Car Year</div>,
+      header: () => header("Car Year"),
     }),
     columnHelper.accessor("performancePoints", {
-      header: () => <div className="flex">Performance Points</div>,
+      header: () => header("Performance Points"),
     }),
     columnHelper.accessor((row) => timeToReadable(row.time), {
       id: "readableTime",
-      header: () => <div className="flex">Time</div>,
+      header: () => header("Time"),
     }),
     columnHelper.accessor("shareCode", {
-      header: () => <div className="flex">Share Code</div>,
+      header: () => header("Share Code"),
     }),
   ];
 
