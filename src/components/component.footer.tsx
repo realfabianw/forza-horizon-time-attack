@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="dark:text-white">
             This project is{" "}
             <Link
-              href="/"
+              href="https://github.com/realfabianw/forza-horizon-time-attack"
               className="font-bold underline decoration-indigo-500"
             >
               open source
