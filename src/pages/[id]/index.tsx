@@ -6,7 +6,6 @@ import { Fragment, useState } from "react";
 import { EntryCreateOneSchema } from "../../../prisma/generated/schemas/createOneEntry.schema";
 import EntryTable from "../../components/component.table.entry";
 import { trpc } from "../../utils/trpc";
-import EntryComponent from "./component.element.entry";
 
 export default function TrackPage() {
   const router = useRouter();
@@ -60,7 +59,7 @@ export default function TrackPage() {
         <button
           type="button"
           onClick={openModal}
-          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
         >
           Add Time
         </button>
@@ -70,7 +69,7 @@ export default function TrackPage() {
         <button
           disabled
           type="button"
-          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
         >
           Please login to add your time
         </button>
@@ -91,27 +90,23 @@ export default function TrackPage() {
           )}
           {track.data && (
             <div className="flex basis-2/3 flex-col">
-              <div className="mx-auto text-xl font-semibold">
+              <div className="mx-auto text-xl font-semibold dark:text-white">
                 {track.data.name}
               </div>
-              <div className="mx-auto">
+              <div className="mx-auto dark:text-white">
                 {track.data.category} - {track.data.type}{" "}
                 {track.data.length && "(" + track.data.length + " km)"}
               </div>
 
               {track.data.shareCode && (
-                <div className="mx-auto">Sharecode: {track.data.shareCode}</div>
+                <div className="mx-auto dark:text-white">
+                  Sharecode: {track.data.shareCode}
+                </div>
               )}
             </div>
           )}
           {renderButton()}
         </div>
-
-        {/* <div className="grid grid-cols-1 gap-2">
-          {entries &&
-            entries.data?.map((entry, index) => EntryComponent(entry))}
-        </div> */}
-
         <div>{EntryTable(id)}</div>
       </div>
 

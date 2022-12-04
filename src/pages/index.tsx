@@ -18,7 +18,9 @@ const Home: NextPage = () => {
           {categories.data &&
             categories.data.map((category) => (
               <Tab className="box-border flex h-auto flex-col justify-between rounded border bg-white/10 p-1 shadow">
-                <div className="mx-auto text-xl font-semibold">{category}</div>
+                <div className="mx-auto text-xl font-semibold dark:text-white">
+                  {category}
+                </div>
                 <img
                   src={"/" + category + " Sprint.png"}
                   className="mx-auto h-auto w-12 object-contain"

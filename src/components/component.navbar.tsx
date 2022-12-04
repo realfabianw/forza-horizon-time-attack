@@ -7,11 +7,14 @@ export default function Navbar() {
   return (
     <nav>
       <div className="flex flex-nowrap justify-between px-10 py-1">
-        <Link href="/" className="rounded-3xl px-5 text-3xl font-bold">
+        <Link
+          href="/"
+          className="rounded-3xl px-5 text-3xl font-bold dark:text-white"
+        >
           Forza Horizon Time Attack
         </Link>
         <button
-          className="rounded-3xl px-5 text-2xl font-bold"
+          className="rounded-3xl px-5 text-2xl font-bold dark:text-white"
           onClick={sessionData ? () => signOut() : () => signIn()}
         >
           {sessionData ? "Sign out" : "Sign in"}

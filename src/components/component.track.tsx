@@ -8,11 +8,13 @@ export default function TrackComponent(track: Track) {
       className="box-border flex h-full justify-between rounded border bg-white/10 p-5 shadow"
     >
       <div>
-        <h2 className="text-xl font-semibold">{track.name}</h2>
-        <div>
+        <h2 className="text-xl font-semibold dark:text-white">{track.name}</h2>
+        <div className="dark:text-white">
           {track.category} {track.length && "(" + track.length + " km)"}
         </div>
-        {track.shareCode && <div>{track.shareCode}</div>}
+        <div className="dark:text-white">
+          {track.shareCode && <div>{track.shareCode}</div>}
+        </div>
       </div>
 
       <img

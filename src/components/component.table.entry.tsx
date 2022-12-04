@@ -17,7 +17,7 @@ export default function EntryTable(id: string) {
   const entries = trpc.entries.getByTrackId.useQuery(id);
 
   function header(input: string) {
-    return <div className="flex text-xl">{input}</div>;
+    return <div className="flex text-xl dark:text-white">{input}</div>;
   }
 
   const columns = [
@@ -99,7 +99,7 @@ export default function EntryTable(id: string) {
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id}>
+                    <td key={cell.id} className="dark:text-white">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
