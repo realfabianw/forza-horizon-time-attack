@@ -2,14 +2,13 @@ import Head from "next/head";
 import Footer from "../components/component.footer";
 import Navbar from "../components/component.navbar";
 import { Oswald } from "@next/font/google";
-import { url } from "inspector";
 const oswald = Oswald({ style: "normal" });
 // className={oswald.className}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className="flex flex-col bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500"
+      className="flex flex-col bg-svg bg-cover"
       style={{ backgroundImage: "/background.svg" }}
     >
       <Head>
@@ -18,7 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <main className="grow pt-10">{children}</main>
+      <main className="min-h-screen pt-10">{children}</main>
       <Footer />
     </div>
   );
