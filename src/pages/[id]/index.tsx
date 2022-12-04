@@ -9,14 +9,14 @@ import { trpc } from "../../utils/trpc";
 
 export default function TrackPage() {
   const router = useRouter();
-  const id: string = String(router.query.id);
+  const id: string = router.query.id as string;
 
   const track = trpc.tracks.getById.useQuery(id);
 
   const addEntry = trpc.entries.insert.useMutation();
   const { data: sessionData } = useSession();
 
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
@@ -29,7 +29,7 @@ export default function TrackPage() {
   async function handleAddEntryForm(e: any) {
     e.preventDefault();
 
-    let entry = {
+    const entry = {
       track: {
         connect: {
           id: id,

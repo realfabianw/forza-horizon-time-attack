@@ -4,6 +4,7 @@ import Link from "next/link";
 export default function TrackComponent(track: Track) {
   return (
     <Link
+      key={track.id}
       href={"/" + track.id}
       className="box-border flex h-full justify-between rounded border bg-white/10 p-5 shadow"
     >

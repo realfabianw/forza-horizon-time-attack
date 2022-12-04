@@ -22,7 +22,7 @@ export const tracksRouter = router({
         },
       })
       .then((data) => {
-        let result: String[] = [];
+        const result: string[] = [];
         data.forEach((queryResult) => result.push(queryResult.category));
         return result;
       });

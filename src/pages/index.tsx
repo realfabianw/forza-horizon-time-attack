@@ -16,8 +16,11 @@ const Home: NextPage = () => {
       <Tab.Group>
         <Tab.List className="grid grid-cols-6 justify-between gap-3 py-10">
           {categories.data &&
-            categories.data.map((category) => (
-              <Tab className="box-border flex h-auto flex-col justify-between rounded border bg-white/10 p-1 shadow">
+            categories.data.map((category, index) => (
+              <Tab
+                key={index}
+                className="box-border flex h-auto flex-col justify-between rounded border bg-white/10 p-1 shadow"
+              >
                 <div className="mx-auto text-xl font-semibold dark:text-white">
                   {category}
                 </div>
@@ -30,8 +33,8 @@ const Home: NextPage = () => {
         </Tab.List>
         <Tab.Panels>
           {categories.data &&
-            categories.data.map((category) => (
-              <Tab.Panel className="grid grid-cols-3 gap-3">
+            categories.data.map((category, index) => (
+              <Tab.Panel key={index} className="grid grid-cols-3 gap-3">
                 {tracks.data &&
                   tracks.data
                     .filter((track) => track.category == category)
