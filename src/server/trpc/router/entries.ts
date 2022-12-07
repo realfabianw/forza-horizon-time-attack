@@ -21,4 +21,13 @@ export const entriesRouter = router({
     .mutation(({ ctx, input }) => {
       return ctx.prisma.entry.create(input);
     }),
+  getAllFromUser: protectedProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      return ctx.prisma.entry.findMany({
+        where: {
+          userId: input,
+        },
+      });
+    }),
 });
