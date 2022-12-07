@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <nav>
       <div className="container mx-auto flex flex-col">
-        <div className="box-border grid justify-items-center rounded border bg-white/10 p-5 shadow">
+        <div className="border- box-border grid justify-items-center rounded border bg-white/10 p-5 shadow">
           <div className="text-2xl dark:text-white">
             Forza Horizon Time Attack
           </div>
