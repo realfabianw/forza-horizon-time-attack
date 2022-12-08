@@ -1,12 +1,13 @@
 import { Track } from "@prisma/client";
 import Link from "next/link";
+import CardComponent from "./component.card";
 
 export default function TrackComponent(track: Track) {
-  return (
+  return CardComponent(
     <Link
       key={track.id}
       href={"/" + track.id}
-      className="box-border flex h-full justify-between rounded border bg-white/10 p-5 shadow"
+      className=" flex h-full justify-between p-5"
     >
       <div>
         <h2 className="text-xl font-semibold dark:text-white">{track.name}</h2>

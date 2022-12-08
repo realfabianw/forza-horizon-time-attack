@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { EntryCreateOneSchema } from "../../../prisma/generated/schemas/createOneEntry.schema";
+import CardComponent from "../../components/component.card";
 import EntryTable from "../../components/component.table.entry";
 import { trpc } from "../../utils/trpc";
 
@@ -55,21 +56,22 @@ export default function TrackPage() {
 
   function renderButton() {
     if (sessionData?.user) {
-      return (
+      return CardComponent(
         <button
           type="button"
           onClick={openModal}
-          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
+          className="w-full rounded-md  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
         >
           Add Time
         </button>
       );
     } else {
-      return (
+      return CardComponent(
         <button
           disabled
           type="button"
-          className="basis-1/3 rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
+          onClick={openModal}
+          className="w-full rounded-md  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
         >
           Please login to add your time
         </button>
@@ -81,31 +83,34 @@ export default function TrackPage() {
     <div className="container mx-auto">
       <div className="flex flex-col">
         <div className="flex flex-row pb-10">
-          {track.data && (
-            <img
-              src={"/" + track.data.category + " " + track.data.type + ".png"}
-              alt={track.data.category + " " + track.data.type}
-              className="mx-auto h-auto w-12 object-contain"
-            />
-          )}
-          {track.data && (
-            <div className="flex basis-2/3 flex-col">
-              <div className="mx-auto text-xl font-semibold dark:text-white">
-                {track.data.name}
-              </div>
-              <div className="mx-auto dark:text-white">
-                {track.data.category} - {track.data.type}{" "}
-                {track.data.length && "(" + track.data.length + " km)"}
-              </div>
-
-              {track.data.shareCode && (
-                <div className="mx-auto dark:text-white">
-                  Sharecode: {track.data.shareCode}
+          <div>
+            {track.data && (
+              <img
+                src={"/" + track.data.category + " " + track.data.type + ".png"}
+                alt={track.data.category + " " + track.data.type}
+                className="mx-auto h-auto w-12 object-contain"
+              />
+            )}
+          </div>
+          <div className="basis-2/3">
+            {track.data && (
+              <div className="flex flex-col">
+                <div className="mx-auto text-xl font-semibold dark:text-white">
+                  {track.data.name}
                 </div>
-              )}
-            </div>
-          )}
-          {renderButton()}
+                <div className="mx-auto dark:text-white">
+                  {track.data.category} - {track.data.type}{" "}
+                  {track.data.length && "(" + track.data.length + " km)"}
+                </div>
+                {track.data.shareCode && (
+                  <div className="mx-auto dark:text-white">
+                    Sharecode: {track.data.shareCode}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="basis-1/3">{renderButton()}</div>
         </div>
         <div>{EntryTable(id)}</div>
       </div>

@@ -9,12 +9,12 @@ export default function Navbar() {
       <div className="flex flex-nowrap justify-between px-10 py-1">
         <Link
           href="/"
-          className="rounded-3xl px-5 text-3xl font-bold dark:text-white"
+          className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent"
         >
           Forza Horizon Time Attack
         </Link>
         <button
-          className="rounded-3xl px-5 text-2xl font-bold dark:text-white"
+          className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-2xl font-extrabold text-transparent"
           onClick={sessionData ? () => signOut() : () => signIn()}
         >
           {sessionData ? "Sign out" : "Sign in"}
