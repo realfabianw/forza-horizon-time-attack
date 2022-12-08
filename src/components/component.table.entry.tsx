@@ -1,7 +1,6 @@
 import { Entry } from "@prisma/client";
-import { createColumnHelper, RowSelection } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
-import { clearLine } from "readline";
 import timeToReadable from "../utils/timeformat";
 import { trpc } from "../utils/trpc";
 import TableComponent from "./component.table";

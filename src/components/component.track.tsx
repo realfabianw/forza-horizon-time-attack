@@ -1,6 +1,5 @@
 import { Track } from "@prisma/client";
 import Link from "next/link";
-import { trpc } from "../utils/trpc";
 import CardComponent from "./component.card";
 
 export default function TrackComponent(track: Track) {

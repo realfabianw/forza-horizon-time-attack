@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function CardComponent(children: React.ReactNode) {
   return (
     <div className="h-full w-full rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 p-1/2">
