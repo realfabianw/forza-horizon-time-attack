@@ -25,7 +25,7 @@ const ProfilePage = () => {
   }
 
   function handleDelete(row: Row<Entry & { track: { name: string } }>) {
-    let entryId: string = row.original.id;
+    const entryId: string = row.original.id;
     deleteEntry.mutate(entryId);
     // TODO refresh page
   }
