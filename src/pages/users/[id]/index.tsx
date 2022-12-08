@@ -1,68 +1,90 @@
 import { Entry } from "@prisma/client";
+import { createColumnHelper, Row } from "@tanstack/react-table";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import TableComponent from "../../../components/component.table";
+import timeToReadable from "../../../utils/timeformat";
 import { trpc } from "../../../utils/trpc";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import CardComponent from "../../../components/component.card";
 
 const ProfilePage = () => {
   const router = useRouter();
   const id: string = router.query.id as string;
+  const user = trpc.users.getById.useQuery(id);
   const entries = trpc.entries.getAllFromUser.useQuery(id);
+  const deleteEntry = trpc.entries.delete.useMutation();
 
-  const handleDelete = (entry: Entry) => {
-    // Delete the entry from the entries array
-    // ...
-    // Update the entries array in the component state
-    // ...
-  };
+  const columnHelper = createColumnHelper<
+    Entry & { track: { name: string } }
+  >();
+
+  function header(input: string) {
+    return <div className="flex text-xl dark:text-white">{input}</div>;
+  }
+
+  function handleDelete(row: Row<Entry & { track: { name: string } }>) {
+    let entryId: string = row.original.id;
+    deleteEntry.mutate(entryId);
+    // TODO refresh page
+  }
+
+  const columns = [
+    columnHelper.accessor("track.name", {
+      header: () => header("Track"),
+      cell: (props) => (
+        <Link href={"/" + props.row.original.trackId}>
+          {props.row.original.track.name}
+        </Link>
+      ),
+    }),
+    columnHelper.accessor("manufacturer", {
+      header: () => header("Car Manufacturer"),
+    }),
+    columnHelper.accessor("model", {
+      header: () => header("Car Model"),
+    }),
+    columnHelper.accessor("year", {
+      header: () => header("Car Year"),
+    }),
+    columnHelper.accessor("performancePoints", {
+      header: () => header("Performance Points"),
+    }),
+    columnHelper.accessor((row) => timeToReadable(row.time), {
+      id: "readableTime",
+      header: () => header("Time"),
+    }),
+    columnHelper.accessor("shareCode", {
+      header: () => header("Share Code"),
+    }),
+    columnHelper.display({
+      id: "actions",
+      header: () => header("Actions"),
+      cell: (props) =>
+        CardComponent(
+          <button
+            className="mx-auto h-full w-full"
+            onClick={() => handleDelete(props.row)}
+          >
+            <TrashIcon className="mx-auto h-6" />
+          </button>
+        ),
+    }),
+  ];
 
   return (
-    <div className="dark:bg-gray-800">
-      <div className="mx-auto max-w-sm rounded-lg bg-white px-4 py-6 shadow-lg dark:bg-gray-800 dark:text-gray-100">
-        <img
-          src="https://via.placeholder.com/150"
-          alt="Profile picture"
-          className="mx-auto rounded-full"
-        />
-        <h1 className="mt-4 text-center text-2xl font-bold dark:text-gray-100">
-          Jane Doe
+    <div className="container mx-auto flex flex-col justify-items-center">
+      <div className="mx-auto pb-5">
+        <img src={user.data?.image ?? ""} className="mx-auto rounded-full" />
+        <h1 className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-center text-3xl font-extrabold text-transparent">
+          {user.data?.name ?? ""}
         </h1>
-        <p className="mt-2 text-center text-gray-700 dark:text-gray-100">
-          Software Engineer
-        </p>
-
-        <div className="mt-8 px-4">
-          <p className="mb-2 font-bold dark:text-gray-100">About Me:</p>
-          <p className="text-gray-700 dark:text-gray-100">
-            I am a software engineer with experience in building web
-            applications.
-          </p>
-        </div>
-
-        <div className="mt-8 px-4">
-          <p className="mb-2 font-bold dark:text-gray-100">Entries:</p>
-          {entries ? (
-            <ul>
-              {entries.data &&
-                entries.data.map((entry, index) => (
-                  <li
-                    key={index}
-                    className="mb-2 text-gray-700 dark:text-gray-100"
-                  >
-                    {entry.manufacturer}
-                    <button
-                      className="ml-2"
-                      onClick={() => handleDelete(entry)}
-                    >
-                      <img src="https://via.placeholder.com/15" alt="Delete" />
-                    </button>
-                  </li>
-                ))}
-            </ul>
-          ) : (
-            <p className="text-gray-700 dark:text-gray-100">No entries</p>
-          )}
-        </div>
       </div>
+      {TableComponent({
+        data: entries.data ? entries.data : [],
+        columns: columns,
+      })}
     </div>
   );
 };

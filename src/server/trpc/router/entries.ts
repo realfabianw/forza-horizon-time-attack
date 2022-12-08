@@ -33,6 +33,20 @@ export const entriesRouter = router({
         where: {
           userId: input,
         },
+        include: {
+          track: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
     }),
+  delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    return ctx.prisma.entry.delete({
+      where: {
+        id: input,
+      },
+    });
+  }),
 });
