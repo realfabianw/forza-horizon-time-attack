@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import TableComponent from "../../../components/component.table";
-import timeToReadable from "../../../utils/timeformat";
 import { trpc } from "../../../utils/trpc";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../../../components/component.card";
+import formatTime from "../../../utils/timeformat";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -51,7 +51,7 @@ const ProfilePage = () => {
     columnHelper.accessor("performancePoints", {
       header: () => header("Performance Points"),
     }),
-    columnHelper.accessor((row) => timeToReadable(row.time), {
+    columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
       header: () => header("Time"),
     }),

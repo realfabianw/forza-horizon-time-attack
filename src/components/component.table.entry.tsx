@@ -1,7 +1,7 @@
 import { Entry } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
-import timeToReadable from "../utils/timeformat";
+import formatTime from "../utils/timeformat";
 import { trpc } from "../utils/trpc";
 import TableComponent from "./component.table";
 
@@ -35,7 +35,7 @@ export default function EntryTable(id: string) {
     columnHelper.accessor("performancePoints", {
       header: () => header("Performance Points"),
     }),
-    columnHelper.accessor((row) => timeToReadable(row.time), {
+    columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
       header: () => header("Time"),
     }),
