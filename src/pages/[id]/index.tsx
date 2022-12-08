@@ -60,7 +60,7 @@ export default function TrackPage() {
         <button
           type="button"
           onClick={openModal}
-          className="w-full rounded-md  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
+          className="h-full w-full rounded-md  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
         >
           Add Time
         </button>
@@ -71,7 +71,7 @@ export default function TrackPage() {
           disabled
           type="button"
           onClick={openModal}
-          className="w-full rounded-md  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
+          className="h-full w-full rounded-md  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
         >
           Please login to add your time
         </button>
@@ -88,7 +88,7 @@ export default function TrackPage() {
               <img
                 src={"/" + track.data.category + " " + track.data.type + ".png"}
                 alt={track.data.category + " " + track.data.type}
-                className="mx-auto h-auto w-12 object-contain"
+                className="mx-auto h-full w-12 self-baseline object-contain"
               />
             )}
           </div>

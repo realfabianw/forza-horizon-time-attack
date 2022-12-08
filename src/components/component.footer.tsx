@@ -4,7 +4,7 @@ import CardComponent from "./component.card";
 export default function Footer() {
   return (
     <nav>
-      <div className="container mx-auto pb-5">
+      <div className="container mx-auto py-5">
         {CardComponent(
           <div className="grid justify-items-center">
             <div className="text-2xl dark:text-white">

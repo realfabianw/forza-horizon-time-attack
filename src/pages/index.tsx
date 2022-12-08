@@ -13,22 +13,21 @@ const Home: NextPage = () => {
       <Tab.Group>
         <Tab.List className="grid grid-cols-6 justify-between gap-3 py-10">
           {categories.data &&
-            categories.data.map((category, index) =>
-              CardComponent(
-                <Tab
-                  key={index}
-                  className="flex h-full w-full flex-col justify-between p-1"
-                >
-                  <div className="mx-auto text-xl font-semibold dark:text-white">
-                    {category}
-                  </div>
-                  <img
-                    src={"/" + category + " Sprint.png"}
-                    className="mx-auto h-auto w-12 object-contain"
-                  />
-                </Tab>
-              )
-            )}
+            categories.data.map((category, index) => (
+              <div key={index}>
+                {CardComponent(
+                  <Tab className="flex h-full w-full flex-col justify-between p-1">
+                    <div className="mx-auto text-xl font-semibold dark:text-white">
+                      {category}
+                    </div>
+                    <img
+                      src={"/" + category + " Sprint.png"}
+                      className="mx-auto h-auto w-12 object-contain"
+                    />
+                  </Tab>
+                )}
+              </div>
+            ))}
         </Tab.List>
         <Tab.Panels>
           {categories.data &&
@@ -37,7 +36,9 @@ const Home: NextPage = () => {
                 {tracks.data &&
                   tracks.data
                     .filter((track) => track.category == category)
-                    .map((track) => TrackComponent(track))}
+                    .map((track, index) => (
+                      <div key={index}>{TrackComponent(track)}</div>
+                    ))}
               </Tab.Panel>
             ))}
         </Tab.Panels>
