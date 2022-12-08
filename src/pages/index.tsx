@@ -17,7 +17,7 @@ const Home: NextPage = () => {
               CardComponent(
                 <Tab
                   key={index}
-                  className="flex w-full flex-col justify-between p-1"
+                  className="flex h-full w-full flex-col justify-between p-1"
                 >
                   <div className="mx-auto text-xl font-semibold dark:text-white">
                     {category}

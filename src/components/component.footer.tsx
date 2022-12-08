@@ -14,7 +14,7 @@ export default function Footer() {
               This project is{" "}
               <Link
                 href="https://github.com/realfabianw/forza-horizon-time-attack"
-                className="font-bold underline decoration-indigo-500"
+                className="font-bold underline decoration-orange-500"
               >
                 open source
               </Link>
