@@ -7,15 +7,20 @@ export const entriesRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.entry.findMany();
   }),
-
   getByTrackId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.entry.findMany({
       where: {
         trackId: input,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }),
-
   insert: protectedProcedure
     .input(EntryCreateOneSchema)
     .mutation(({ ctx, input }) => {
