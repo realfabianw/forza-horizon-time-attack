@@ -43,10 +43,12 @@ export const entriesRouter = router({
       });
     }),
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    return ctx.prisma.entry.delete({
-      where: {
-        id: input,
-      },
-    });
+    if (ctx.session.user.id == input) {
+      return ctx.prisma.entry.delete({
+        where: {
+          id: input,
+        },
+      });
+    }
   }),
 });

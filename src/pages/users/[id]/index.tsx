@@ -8,8 +8,10 @@ import { trpc } from "../../../utils/trpc";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../../../components/component.card";
 import formatTime from "../../../utils/timeformat";
+import { useSession } from "next-auth/react";
 
 const ProfilePage = () => {
+  const { data: sessionData } = useSession();
   const router = useRouter();
   const id: string = router.query.id as string;
   const user = trpc.users.getById.useQuery(id);
@@ -58,20 +60,25 @@ const ProfilePage = () => {
     columnHelper.accessor("shareCode", {
       header: () => header("Share Code"),
     }),
-    columnHelper.display({
-      id: "actions",
-      header: () => header("Actions"),
-      cell: (props) =>
-        CardComponent(
-          <button
-            className="mx-auto h-full w-full"
-            onClick={() => handleDelete(props.row)}
-          >
-            <TrashIcon className="mx-auto h-6" />
-          </button>
-        ),
-    }),
   ];
+
+  if (user.data?.id == sessionData?.user?.id) {
+    columns.push(
+      columnHelper.display({
+        id: "actions",
+        header: () => header("Actions"),
+        cell: (props) =>
+          CardComponent(
+            <button
+              className="mx-auto h-full w-full"
+              onClick={() => handleDelete(props.row)}
+            >
+              <TrashIcon className="mx-auto h-6" />
+            </button>
+          ),
+      })
+    );
+  }
 
   return (
     <div className="container mx-auto flex flex-col justify-items-center">
