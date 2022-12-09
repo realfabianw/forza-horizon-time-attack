@@ -1,7 +1,7 @@
 export default function formatTime(timeInSeconds: number): string {
   const minutes = Math.floor(timeInSeconds / 60);
   const seconds = Math.floor(timeInSeconds % 60);
-  const milliseconds = Math.floor((timeInSeconds % 1) * 1000);
+  const milliseconds = Math.floor(timeInSeconds * 1000) % 1000;
 
   // Pad the minutes, seconds, and milliseconds with leading zeroes
   // if they are less than 10
