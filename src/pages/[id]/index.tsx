@@ -44,7 +44,10 @@ export default function TrackPage() {
       model: e.target.model.value as string,
       year: Number(e.target.year.value),
       performancePoints: Number(e.target.performancePoints.value),
-      time: Number(e.target.time.value),
+      time:
+        Number(e.target.minutes.value * 60) +
+        Number(e.target.seconds.value) +
+        Number(e.target.milliseconds.value / 1000),
       shareCode: e.target.shareCode.value as string,
     };
 
@@ -139,69 +142,88 @@ export default function TrackPage() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Add your Time
-                  </Dialog.Title>
-                  <div className="mt-2 flex flex-col">
-                    <form
-                      onSubmit={handleAddEntryForm}
-                      className="flex flex-col"
-                    >
-                      <label>Car Manufacturer</label>
-                      <input
-                        className="border"
-                        type="text"
-                        id="manufacturer"
-                        name="manufacturer"
-                      />
-                      <label>Car Model</label>
-                      <input
-                        className="border"
-                        type="text"
-                        id="model"
-                        name="model"
-                      />
-                      <label>Car Year</label>
-                      <input
-                        className="border"
-                        type="text"
-                        id="year"
-                        name="year"
-                      />
-                      <label>Car Performance Points</label>
-                      <input
-                        className="border"
-                        type="text"
-                        id="performancePoints"
-                        name="performancePoints"
-                      />
-                      <label>Time (in seconds)</label>
-                      <input
-                        className="border"
-                        type="text"
-                        id="time"
-                        name="time"
-                      />
-                      <label>Sharecode (optional)</label>
-                      <input
-                        className="border"
-                        type="text"
-                        id="shareCode"
-                        name="shareCode"
-                      />
-                      <button
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        type="submit"
+                {CardComponent(
+                  <Dialog.Panel className="max-w-md transform overflow-hidden p-6  transition-all">
+                    <Dialog.Title as="h3" className="text-lg dark:text-white">
+                      Add your Time
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <form
+                        onSubmit={handleAddEntryForm}
+                        className="flex flex-col"
                       >
-                        Submit
-                      </button>
-                    </form>
-                  </div>
-                </Dialog.Panel>
+                        <div className="dark:text-white">Car Manufacturer</div>
+                        <input
+                          type="text"
+                          id="manufacturer"
+                          name="manufacturer"
+                        />
+                        <div className="dark:text-white">Car Model</div>
+                        <input type="text" id="model" name="model" />
+                        <div className="dark:text-white">Car Year</div>
+                        <input type="number" id="year" name="year" />
+                        <div className="dark:text-white">
+                          Car Performance Points
+                        </div>
+                        <input
+                          type="number"
+                          id="performancePoints"
+                          name="performancePoints"
+                        />
+                        <div className="grid grid-cols-3 gap-1">
+                          <div className="w-full">
+                            <div className="text-center dark:text-white">
+                              Minutes
+                            </div>
+                            <input
+                              type="number"
+                              id="minutes"
+                              name="minutes"
+                              className="w-full"
+                            />
+                          </div>
+                          <div className="w-full">
+                            <div className="text-center dark:text-white">
+                              Seconds
+                            </div>
+                            <input
+                              type="number"
+                              id="seconds"
+                              name="seconds"
+                              className="w-full"
+                            />
+                          </div>
+                          <div className="w-full">
+                            <div className="text-center dark:text-white">
+                              Milliseconds
+                            </div>
+                            <input
+                              type="number"
+                              id="milliseconds"
+                              name="milliseconds"
+                              className="w-full"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="dark:text-white">
+                          Sharecode (optional)
+                        </div>
+                        <input type="text" id="shareCode" name="shareCode" />
+                        <div className="pt-5">
+                          {CardComponent(
+                            <button
+                              className="h-10 w-full text-white"
+                              type="submit"
+                            >
+                              Submit
+                            </button>
+                          )}
+                        </div>
+                      </form>
+                    </div>
+                  </Dialog.Panel>
+                )}
               </Transition.Child>
             </div>
           </div>

@@ -14,7 +14,7 @@ const Home: NextPage = () => {
         <Tab.List className="grid grid-cols-6 justify-between gap-3 py-10">
           {categories.data &&
             categories.data.map((category, index) => (
-              <div key={index}>
+              <div key={index} className="h-full">
                 {CardComponent(
                   <Tab className="flex h-full w-full flex-col justify-between p-1">
                     <div className="mx-auto text-xl font-semibold dark:text-white">
