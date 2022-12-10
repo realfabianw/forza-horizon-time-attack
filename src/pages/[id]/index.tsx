@@ -144,7 +144,7 @@ export default function TrackPage() {
               >
                 {CardComponent(
                   <Dialog.Panel className="max-w-md transform overflow-hidden p-6  transition-all">
-                    <Dialog.Title as="h3" className="text-lg dark:text-white">
+                    <Dialog.Title as="h3" className="text-lg text-white">
                       Add your Time
                     </Dialog.Title>
                     <div className="mt-2">
@@ -152,64 +152,77 @@ export default function TrackPage() {
                         onSubmit={handleAddEntryForm}
                         className="flex flex-col"
                       >
-                        <div className="dark:text-white">Car Manufacturer</div>
+                        <div className="text-white">Car Manufacturer</div>
                         <input
                           type="text"
                           id="manufacturer"
                           name="manufacturer"
+                          className="rounded bg-zinc-900 text-white"
                         />
-                        <div className="dark:text-white">Car Model</div>
-                        <input type="text" id="model" name="model" />
-                        <div className="dark:text-white">Car Year</div>
-                        <input type="number" id="year" name="year" />
-                        <div className="dark:text-white">
-                          Car Performance Points
-                        </div>
+                        <div className="text-white">Car Model</div>
+                        <input
+                          type="text"
+                          id="model"
+                          name="model"
+                          className="rounded bg-zinc-900 text-white"
+                        />
+                        <div className="text-white">Car Year</div>
+                        <input
+                          type="number"
+                          id="year"
+                          name="year"
+                          className="rounded bg-zinc-900 text-white"
+                        />
+                        <div className="text-white">Car Performance Points</div>
                         <input
                           type="number"
                           id="performancePoints"
                           name="performancePoints"
+                          className="rounded bg-zinc-900 text-white"
                         />
                         <div className="grid grid-cols-3 gap-1">
                           <div className="w-full">
-                            <div className="text-center dark:text-white">
+                            <div className="text-center text-white">
                               Minutes
                             </div>
                             <input
                               type="number"
                               id="minutes"
                               name="minutes"
-                              className="w-full"
+                              className="w-full rounded bg-zinc-900 text-white"
                             />
                           </div>
                           <div className="w-full">
-                            <div className="text-center dark:text-white">
+                            <div className="text-center text-white">
                               Seconds
                             </div>
                             <input
                               type="number"
                               id="seconds"
                               name="seconds"
-                              className="w-full"
+                              className="w-full rounded bg-zinc-900 text-white"
                             />
                           </div>
                           <div className="w-full">
-                            <div className="text-center dark:text-white">
+                            <div className="text-center text-white">
                               Milliseconds
                             </div>
                             <input
                               type="number"
                               id="milliseconds"
                               name="milliseconds"
-                              className="w-full"
+                              className="w-full rounded bg-zinc-900 text-white"
                             />
                           </div>
                         </div>
 
-                        <div className="dark:text-white">
-                          Sharecode (optional)
-                        </div>
-                        <input type="text" id="shareCode" name="shareCode" />
+                        <div className="text-white">Sharecode (optional)</div>
+                        <input
+                          type="text"
+                          id="shareCode"
+                          name="shareCode"
+                          className="rounded bg-zinc-900 text-white"
+                        />
                         <div className="pt-5">
                           {CardComponent(
                             <button
