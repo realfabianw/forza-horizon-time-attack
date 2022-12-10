@@ -44,7 +44,7 @@ const performanceClasses: Index[] = [
 
 export default function PerformanceIndex(performancePoints: number) {
   function getPerformanceClass(points: number): Index {
-    for (let classes of performanceClasses) {
+    for (const classes of performanceClasses) {
       if (points > classes.upper) {
         continue;
       }
