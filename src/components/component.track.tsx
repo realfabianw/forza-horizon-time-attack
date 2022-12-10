@@ -2,7 +2,9 @@ import { Track } from "@prisma/client";
 import Link from "next/link";
 import CardComponent from "./component.card";
 
-export default function TrackComponent(track: Track) {
+export default function TrackComponent(
+  track: Track & { entries: { id: string }[] }
+) {
   return CardComponent(
     <Link
       key={track.id}
@@ -29,6 +31,11 @@ export default function TrackComponent(track: Track) {
         />
       </div>
       {/* TODO Add count of entries to card */}
+      {track.entries.length > 0 && (
+        <div className="mx-auto -mb-4 font-mono dark:text-zinc-500">
+          {track.entries.length} entries found
+        </div>
+      )}
     </Link>
   );
 }

@@ -3,6 +3,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import formatTime from "../utils/timeformat";
 import { trpc } from "../utils/trpc";
+import PerformanceIndex from "./component.performance.index";
 import TableComponent from "./component.table";
 
 export default function EntryTable(id: string) {
@@ -34,6 +35,7 @@ export default function EntryTable(id: string) {
     }),
     columnHelper.accessor("performancePoints", {
       header: () => header("Performance Points"),
+      cell: (props) => PerformanceIndex(props.row.original.performancePoints),
     }),
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",

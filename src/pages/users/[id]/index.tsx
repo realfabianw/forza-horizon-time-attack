@@ -9,6 +9,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../../../components/component.card";
 import formatTime from "../../../utils/timeformat";
 import { useSession } from "next-auth/react";
+import PerformanceIndex from "../../../components/component.performance.index";
 
 const ProfilePage = () => {
   const { data: sessionData } = useSession();
@@ -52,6 +53,7 @@ const ProfilePage = () => {
     }),
     columnHelper.accessor("performancePoints", {
       header: () => header("Performance Points"),
+      cell: (props) => PerformanceIndex(props.row.original.performancePoints),
     }),
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
