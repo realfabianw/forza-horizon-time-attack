@@ -144,7 +144,7 @@ export default function TrackPage() {
               >
                 {CardComponent(
                   <Dialog.Panel className="max-w-md transform overflow-hidden p-6  transition-all">
-                    <Dialog.Title as="h3" className="text-lg text-white">
+                    <Dialog.Title className="text-xl font-bold text-white">
                       Add your Time
                     </Dialog.Title>
                     <div className="mt-2">
