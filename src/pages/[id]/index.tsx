@@ -160,7 +160,7 @@ export default function TrackPage() {
 
         <div>
           {TableComponent({
-            data: entries.data,
+            data: entries.data ? entries.data : [],
             columns: columns,
           })}
         </div>
