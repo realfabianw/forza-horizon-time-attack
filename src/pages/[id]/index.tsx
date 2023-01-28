@@ -1,17 +1,24 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { Entry } from "@prisma/client";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
+import { HashLoader } from "react-spinners";
 import { EntryCreateOneSchema } from "../../../prisma/generated/schemas/createOneEntry.schema";
 import CardComponent from "../../components/component.card";
-import EntryTable from "../../components/component.table.entry";
+import PerformanceIndex from "../../components/component.performance.index";
+import formatTime from "../../utils/timeformat";
 import { trpc } from "../../utils/trpc";
+import TableComponent from "../../components/component.table";
 
 export default function TrackPage() {
   const router = useRouter();
   const id: string = router.query.id as string;
 
   const track = trpc.tracks.getById.useQuery(id);
+  const entries = trpc.entries.getByTrackId.useQuery(id);
 
   const addEntry = trpc.entries.insert.useMutation();
   const { data: sessionData } = useSession();
@@ -81,21 +88,57 @@ export default function TrackPage() {
     }
   }
 
+  const columnHelper = createColumnHelper<Entry & { user: { name: string } }>();
+
+  function header(input: string) {
+    return <div className="flex text-xl dark:text-white">{input}</div>;
+  }
+
+  const columns = [
+    columnHelper.display({
+      id: "user",
+      header: () => header("User"),
+      cell: (props) => (
+        <Link href={"/users/" + props.row.original.userId}>
+          {props.row.original.user.name}
+        </Link>
+      ),
+    }),
+    columnHelper.accessor("manufacturer", {
+      header: () => header("Car Manufacturer"),
+    }),
+    columnHelper.accessor("model", {
+      header: () => header("Car Model"),
+    }),
+    columnHelper.accessor("year", {
+      header: () => header("Car Year"),
+    }),
+    columnHelper.accessor("performancePoints", {
+      header: () => header("Performance Points"),
+      cell: (props) => PerformanceIndex(props.row.original.performancePoints),
+    }),
+    columnHelper.accessor((row) => formatTime(row.time), {
+      id: "readableTime",
+      header: () => header("Time"),
+    }),
+    columnHelper.accessor("shareCode", {
+      header: () => header("Share Code"),
+    }),
+  ];
+
   return (
     <div className="container mx-auto">
       <div className="flex flex-col">
-        <div className="flex flex-row pb-10">
-          <div>
-            {track.data && (
+        {track.data && (
+          <div className="flex flex-row pb-10">
+            <div>
               <img
                 src={"/" + track.data.category + " " + track.data.type + ".png"}
                 alt={track.data.category + " " + track.data.type}
                 className="mx-auto h-full w-12 self-baseline object-contain"
               />
-            )}
-          </div>
-          <div className="basis-2/3">
-            {track.data && (
+            </div>
+            <div className="basis-2/3">
               <div className="flex flex-col">
                 <div className="mx-auto text-xl font-semibold dark:text-white">
                   {track.data.name}
@@ -110,11 +153,17 @@ export default function TrackPage() {
                   </div>
                 )}
               </div>
-            )}
+            </div>
+            <div className="basis-1/3">{renderButton()}</div>
           </div>
-          <div className="basis-1/3">{renderButton()}</div>
+        )}
+
+        <div>
+          {TableComponent({
+            data: entries.data,
+            columns: columns,
+          })}
         </div>
-        <div>{EntryTable(id)}</div>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
