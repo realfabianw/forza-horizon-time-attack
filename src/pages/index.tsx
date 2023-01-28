@@ -3,13 +3,18 @@ import { trpc } from "../utils/trpc";
 import { Tab } from "@headlessui/react";
 import TrackComponent from "../components/component.track";
 import CardComponent from "../components/component.card";
+import { HashLoader } from "react-spinners";
 
 const Home: NextPage = () => {
   const tracks = trpc.tracks.getAll.useQuery();
   const categories = trpc.tracks.getAllCategories.useQuery();
 
   if (!categories.data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="align-center container mx-auto flex h-screen justify-center">
+        <HashLoader className="self-center" color="white" />
+      </div>
+    );
   }
 
   return (
