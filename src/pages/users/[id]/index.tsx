@@ -85,7 +85,10 @@ const ProfilePage = () => {
   return (
     <div className="container mx-auto flex flex-col justify-items-center">
       <div className="mx-auto pb-10">
-        <img src={user.data?.image ?? ""} className="mx-auto rounded-full" />
+        <img
+          src={user.data?.image ?? ""}
+          className="mx-auto w-40 rounded-full"
+        />
         <h1 className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-center text-3xl font-extrabold text-transparent">
           {user.data?.name ?? ""}
         </h1>

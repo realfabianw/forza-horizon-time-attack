@@ -7,12 +7,15 @@ export default function Navbar() {
   return (
     <nav>
       <div className="flex flex-nowrap items-baseline px-10 py-1">
-        <Link
-          href="/"
-          className="grow bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent"
-        >
-          Forza Horizon Time Attack
-        </Link>
+        <div className="grow">
+          <Link
+            href="/"
+            className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent"
+          >
+            Forza Horizon Time Attack
+          </Link>
+        </div>
+
         {sessionData?.user && (
           <Link
             href={"/users/" + sessionData.user.id}
