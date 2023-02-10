@@ -7,22 +7,22 @@ interface Index {
 const performanceClasses: Index[] = [
   {
     upper: 100,
-    class: "D",
+    class: "D ",
     color: "bg-sky-300",
   },
   {
     upper: 600,
-    class: "C",
+    class: "C ",
     color: "bg-amber-300",
   },
   {
     upper: 700,
-    class: "B",
+    class: "B ",
     color: "bg-orange-500",
   },
   {
     upper: 800,
-    class: "A",
+    class: "A ",
     color: "bg-red-600",
   },
   {
