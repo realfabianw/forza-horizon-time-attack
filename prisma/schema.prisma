@@ -67,6 +67,7 @@ model VerificationToken {
 
 model Car {
   id                        String @id @default(auto()) @map("_id") @db.ObjectId
+  kId                       Int
   make                      String
   model                     String
   year                      Int?
@@ -83,12 +84,12 @@ model Car {
   stockLaunch               Float?
   stockBraking              Float?
   stockOffroad              Float?
-  stockTopSpeed             Float?
+  stockTopSpeedKmh          Float?
   stockLateralGs            Float?
   stock0To97                Float?
   stock0To161               Float?
   stockHorsepower           Int?
-  stockWeight               Int?
+  stockWeightLbs            Int?
   entries                   Entry[]
   // tuningSetups              TuningSetup[]
 }
