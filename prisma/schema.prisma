@@ -65,12 +65,61 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Car {
+  id                        String @id @default(auto()) @map("_id") @db.ObjectId
+  make                      String
+  model                     String
+  year                      Int?
+  group                     String?
+  imageLink                 String?
+  stockPerformancePoints    Int?
+  maxPerformancePoints      Int?
+  stockDrivetrain           String?
+  stockIngamePrice          Int?
+  carSource                 String?
+  stockSpeed                Float?
+  stockHandling             Float?
+  stockAcceleration         Float?
+  stockLaunch               Float?
+  stockBraking              Float?
+  stockOffroad              Float?
+  stockTopSpeed             Float?
+  stockLateralGs            Float?
+  stock0To97                Float?
+  stock0To161               Float?
+  stockHorsepower           Int?
+  stockWeight               Int?
+  entries                   Entry[]
+  // tuningSetups              TuningSetup[]
+}
+
+// model TuningSetup {
+//   id                  String @id @default(auto()) @map("_id") @db.ObjectId
+//   carId               String
+//   car                 Car @relation(fields:[carId], references: [id])
+//   performancePoints   Int
+//   drivetrain          String
+//   buildType           String
+//   shareCode           String?
+//   speed               Float?
+//   handling            Float?
+//   acceleration        Float?
+//   launch              Float?
+//   braking             Float?
+//   offroad             Float?
+//   topSpeed            Float?
+//   0To97               Float?
+//   0To161              Float?
+//   horsepower          Float?
+//   weight              Float?
+// }
+
 model Track {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String @unique
   category    String
   type        String
-  shareCode   String?
+  shareCode   String? @unique
   length      Float?
   entries     Entry[]
 }
@@ -81,12 +130,15 @@ model Entry {
   track             Track @relation(fields: [trackId], references: [id])
   userId            String
   user              User @relation(fields:[userId], references: [id])
-  manufacturer      String
-  model             String
-  year              Int
+  carId             String
+  car               Car @relation(fields:[carId], references: [id])
+  // tuningSetupId     String
+  // tuningSetup       TuningSetup @relation(fields:[tuningSetupId], references: [id])
   performancePoints Int
+  drivetrain        String
+  buildType         String
   time              Float
-  shareCode         String?
+  shareCode         String? @unique
 }
 
 
