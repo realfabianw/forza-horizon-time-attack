@@ -33,7 +33,9 @@ export default function TrackComponent(
       {/* TODO Add count of entries to card */}
       {track.entries.length > 0 && (
         <div className="mx-auto -mb-4 font-mono dark:text-zinc-500">
-          {track.entries.length} entries found
+          {track.entries.length == 1
+            ? track.entries.length + " Entry"
+            : track.entries.length + " Entries"}
         </div>
       )}
     </Link>

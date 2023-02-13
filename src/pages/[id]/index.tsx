@@ -7,10 +7,13 @@ import PerformanceIndex from "../../components/component.performance.index";
 import formatTime from "../../utils/timeformat";
 import { trpc } from "../../utils/trpc";
 import TableComponent from "../../components/component.table";
+import { signIn, useSession } from "next-auth/react";
 
 export default function TrackPage() {
   const router = useRouter();
   const id = Number(router.query.id);
+
+  const { data: sessionData } = useSession();
 
   const track = trpc.tracks.getByIdIncludeRelations.useQuery(id);
 
@@ -91,7 +94,11 @@ export default function TrackPage() {
               {CardComponent(
                 <button
                   type="button"
-                  onClick={() => router.push("/" + id + "/add-entry")}
+                  onClick={() =>
+                    sessionData
+                      ? router.push("/" + id + "/add-entry")
+                      : signIn()
+                  }
                   className="h-full w-full rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:text-white"
                 >
                   Add Time
