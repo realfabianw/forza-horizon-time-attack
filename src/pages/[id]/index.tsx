@@ -19,7 +19,6 @@ export default function TrackPage() {
 
   const track = trpc.tracks.getByIdIncludeRelations.useQuery(id);
 
-  const addEntry = trpc.entries.insert.useMutation();
   const { data: sessionData } = useSession();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +56,7 @@ export default function TrackPage() {
       shareCode: e.target.shareCode.value as string,
     };
 
-    addEntry.mutate(EntryCreateOneSchema.parse({ data: entry }));
+    //addEntry.mutate(EntryCreateOneSchema.parse({ data: entry }));
     // TODO refresh
     closeModal();
   }

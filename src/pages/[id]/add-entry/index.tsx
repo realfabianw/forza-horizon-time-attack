@@ -1,41 +1,53 @@
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { HashLoader } from "react-spinners";
+import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
 import CardComponent from "../../../components/component.card";
 import { trpc } from "../../../utils/trpc";
 
 export default function AddEntryPage() {
   const router = useRouter();
   const id: number = Number(router.query.id);
+
+  const { data: sessionData } = useSession();
+
   const cars = trpc.cars.getAll.useQuery();
+  const addEntry = trpc.entries.insert.useMutation();
 
   async function handleAddEntryForm(e: any) {
+    e.preventDefault();
     console.log(e);
-    // e.preventDefault();
+    console.log(e.target.car.value);
+    const entry = {
+      track: {
+        connect: {
+          id: id,
+        },
+      },
+      car: {
+        connect: {
+          id: Number(e.target.car.value),
+        },
+      },
+      user: {
+        connect: {
+          id: sessionData?.user?.id,
+        },
+      },
 
-    // const entry = {
-    //   track: {
-    //     connect: {
-    //       id: id,
-    //     },
-    //   },
-    //   user: {
-    //     connect: {
-    //       id: sessionData?.user?.id,
-    //     },
-    //   },
-    //   manufacturer: e.target.manufacturer.value as string,
-    //   model: e.target.model.value as string,
-    //   year: Number(e.target.year.value),
-    //   performancePoints: Number(e.target.performancePoints.value),
-    //   time:
-    //     Number(e.target.minutes.value * 60) +
-    //     Number(e.target.seconds.value) +
-    //     Number(e.target.milliseconds.value / 1000),
-    //   shareCode: e.target.shareCode.value as string,
-    // };
+      performancePoints: Number(e.target.performancePoints.value),
+      drivetrain: String(e.target.drivetrain.value),
+      buildType: String(e.target.buildType.value),
+      time:
+        Number(e.target.minutes.value * 60) +
+        Number(e.target.seconds.value) +
+        Number(e.target.milliseconds.value / 1000),
+      shareCode: String(e.target.shareCode.value),
+      // as string
+    };
 
-    // addEntry.mutate(EntryCreateOneSchema.parse({ data: entry }));
+    addEntry.mutate(EntryCreateOneSchema.parse({ data: entry }));
     // // TODO refresh
     // closeModal();
   }
@@ -49,12 +61,12 @@ export default function AddEntryPage() {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-56">
       <form onSubmit={handleAddEntryForm} className="flex flex-col">
         <div className="dark:text-white">Car Manufacturer</div>
-        <select name="car_year">
+        <select name="car">
           {cars.data.map((car) => (
-            <option value={car.id}>
+            <option key={car.id} value={car.id}>
               {car.make + " " + car.model + " (" + car.year + ")"}
             </option>
           ))}
@@ -67,6 +79,28 @@ export default function AddEntryPage() {
           name="performancePoints"
           className="rounded bg-zinc-900 dark:text-white"
         />
+        <div className="grid grid-cols-2 gap-1">
+          <div className="w-full">
+            <div className="text-center dark:text-white">Drivetrain</div>
+            <select name="drivetrain" className="w-full">
+              <option value="AWD">AWD</option>
+              <option value="RWD">RWD</option>
+              <option value="FWD">FWD</option>
+            </select>
+          </div>
+          <div className="w-full">
+            <div className="text-center dark:text-white">Build Type</div>
+            <select name="buildType" className="w-full">
+              <option value="Stock">Stock</option>
+              <option value="Purist">Purist</option>
+              <option value="Power">Power</option>
+              <option value="Grip">Grip</option>
+              <option value="Drift">Drift</option>
+              <option value="Racing">Racing</option>
+            </select>
+          </div>
+        </div>
+
         <div className="grid grid-cols-3 gap-1">
           <div className="w-full">
             <div className="text-center dark:text-white">Minutes</div>
