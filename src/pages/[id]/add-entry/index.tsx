@@ -47,7 +47,8 @@ export default function AddEntryPage() {
       // as string
     };
 
-    addEntry.mutate(EntryCreateOneSchema.parse({ data: entry }));
+    await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
+    router.push("/" + id);
     // // TODO refresh
     // closeModal();
   }
