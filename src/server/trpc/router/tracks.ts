@@ -8,7 +8,6 @@ export const tracksRouter = router({
       /**
        * TODO Change this to include a count of entries
        * https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#filter-the-relation-count
-       *
        * The docs dont work for me. MongoDB problem?
        */
       include: {
