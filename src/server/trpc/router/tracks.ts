@@ -20,13 +20,30 @@ export const tracksRouter = router({
       },
     });
   }),
-  getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+  getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.track.findFirst({
       where: {
         id: input,
       },
     });
   }),
+  getByIdIncludeRelations: publicProcedure
+    .input(z.number())
+    .query(({ ctx, input }) => {
+      return ctx.prisma.track.findFirst({
+        where: {
+          id: input,
+        },
+        include: {
+          entries: {
+            include: {
+              car: true,
+              user: true,
+            },
+          },
+        },
+      });
+    }),
   getAllCategories: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.track
       .findMany({

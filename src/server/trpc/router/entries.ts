@@ -7,7 +7,7 @@ export const entriesRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.entry.findMany();
   }),
-  getByTrackId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+  getByTrackId: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.entry.findMany({
       where: {
         trackId: input,
@@ -40,13 +40,12 @@ export const entriesRouter = router({
       },
     });
   }),
-  delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    if (ctx.session.user.id == input) {
-      return ctx.prisma.entry.delete({
-        where: {
-          id: input,
-        },
-      });
-    }
+  delete: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
+    return ctx.prisma.entry.deleteMany({
+      where: {
+        id: input,
+        userId: ctx.session.user.id,
+      },
+    });
   }),
 });

@@ -1,4 +1,4 @@
-import { Entry } from "@prisma/client";
+import { Car, Entry, Track, User } from "@prisma/client";
 import { createColumnHelper, Row } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,20 +15,17 @@ const ProfilePage = () => {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const id: string = router.query.id as string;
-  const user = trpc.users.getById.useQuery(id);
-  const entries = trpc.entries.getAllFromUser.useQuery(id);
+  const user = trpc.users.getByIdIncludeRelations.useQuery(id);
   const deleteEntry = trpc.entries.delete.useMutation();
 
-  const columnHelper = createColumnHelper<
-    Entry & { track: { name: string } }
-  >();
+  const columnHelper = createColumnHelper<Entry & { track: Track; car: Car }>();
 
   function header(input: string) {
     return <div className="flex text-xl dark:text-white">{input}</div>;
   }
 
   function handleDelete(row: Row<Entry & { track: { name: string } }>) {
-    const entryId: string = row.original.id;
+    const entryId: number = row.original.id;
     deleteEntry.mutate(entryId);
     // TODO refresh page
   }
@@ -42,13 +39,13 @@ const ProfilePage = () => {
         </Link>
       ),
     }),
-    columnHelper.accessor("manufacturer", {
+    columnHelper.accessor("car.make", {
       header: () => header("Car Manufacturer"),
     }),
-    columnHelper.accessor("model", {
+    columnHelper.accessor("car.model", {
       header: () => header("Car Model"),
     }),
-    columnHelper.accessor("year", {
+    columnHelper.accessor("car.year", {
       header: () => header("Car Year"),
     }),
     columnHelper.accessor("performancePoints", {
@@ -94,7 +91,7 @@ const ProfilePage = () => {
         </h1>
       </div>
       {TableComponent({
-        data: entries.data ? entries.data : [],
+        data: user.data ? user.data.entries : [],
         columns: columns,
       })}
     </div>

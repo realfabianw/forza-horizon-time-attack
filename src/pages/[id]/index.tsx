@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Entry } from "@prisma/client";
+import { Car, Entry, User } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -15,10 +15,9 @@ import TableComponent from "../../components/component.table";
 
 export default function TrackPage() {
   const router = useRouter();
-  const id: string = router.query.id as string;
+  const id: number = Number(router.query.id);
 
-  const track = trpc.tracks.getById.useQuery(id);
-  const entries = trpc.entries.getByTrackId.useQuery(id);
+  const track = trpc.tracks.getByIdIncludeRelations.useQuery(id);
 
   const addEntry = trpc.entries.insert.useMutation();
   const { data: sessionData } = useSession();
@@ -88,7 +87,7 @@ export default function TrackPage() {
     }
   }
 
-  const columnHelper = createColumnHelper<Entry & { user: { name: string } }>();
+  const columnHelper = createColumnHelper<Entry & { user: User; car: Car }>();
 
   function header(input: string) {
     return <div className="flex text-xl dark:text-white">{input}</div>;
@@ -96,7 +95,7 @@ export default function TrackPage() {
 
   const columns = [
     columnHelper.display({
-      id: "user",
+      id: "user.id",
       header: () => header("User"),
       cell: (props) => (
         <Link href={"/users/" + props.row.original.userId}>
@@ -104,13 +103,14 @@ export default function TrackPage() {
         </Link>
       ),
     }),
-    columnHelper.accessor("manufacturer", {
+
+    columnHelper.accessor("car.make", {
       header: () => header("Car Manufacturer"),
     }),
-    columnHelper.accessor("model", {
+    columnHelper.accessor("car.model", {
       header: () => header("Car Model"),
     }),
-    columnHelper.accessor("year", {
+    columnHelper.accessor("car.year", {
       header: () => header("Car Year"),
     }),
     columnHelper.accessor("performancePoints", {
@@ -160,7 +160,7 @@ export default function TrackPage() {
 
         <div>
           {TableComponent({
-            data: entries.data ? entries.data : [],
+            data: track.data ? track.data.entries : [],
             columns: columns,
           })}
         </div>

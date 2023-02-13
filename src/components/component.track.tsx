@@ -3,7 +3,7 @@ import Link from "next/link";
 import CardComponent from "./component.card";
 
 export default function TrackComponent(
-  track: Track & { entries: { id: string }[] }
+  track: Track & { entries: { id: number }[] }
 ) {
   return CardComponent(
     <Link
