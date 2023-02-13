@@ -1,20 +1,16 @@
-import { Dialog, Transition } from "@headlessui/react";
 import { Car, Entry, User } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
 import CardComponent from "../../components/component.card";
 import PerformanceIndex from "../../components/component.performance.index";
 import formatTime from "../../utils/timeformat";
 import { trpc } from "../../utils/trpc";
 import TableComponent from "../../components/component.table";
-import { HashLoader } from "react-spinners";
 
 export default function TrackPage() {
   const router = useRouter();
-  const id: number = Number(router.query.id);
+  const id = Number(router.query.id);
 
   const track = trpc.tracks.getByIdIncludeRelations.useQuery(id);
 

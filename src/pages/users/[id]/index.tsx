@@ -1,4 +1,4 @@
-import { Car, Entry, Track, User } from "@prisma/client";
+import { Car, Entry, Track } from "@prisma/client";
 import { createColumnHelper, Row } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import PerformanceIndex from "../../../components/component.performance.index";
 const ProfilePage = () => {
   const { data: sessionData } = useSession();
   const router = useRouter();
-  const id: string = router.query.id as string;
+  const id = String(router.query.id);
   const user = trpc.users.getByIdIncludeRelations.useQuery(id);
   const deleteEntry = trpc.entries.delete.useMutation();
 

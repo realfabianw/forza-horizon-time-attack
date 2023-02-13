@@ -8,7 +8,7 @@ import { trpc } from "../../../utils/trpc";
 
 export default function AddEntryPage() {
   const router = useRouter();
-  const id: number = Number(router.query.id);
+  const id = Number(router.query.id);
 
   const { data: sessionData } = useSession();
 
