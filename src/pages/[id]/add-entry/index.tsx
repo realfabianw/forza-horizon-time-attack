@@ -1,6 +1,7 @@
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
+import Select from "react-select";
 import { HashLoader } from "react-spinners";
 import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
 import CardComponent from "../../../components/component.card";
@@ -49,8 +50,6 @@ export default function AddEntryPage() {
 
     await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
     router.push("/" + id);
-    // // TODO refresh
-    // closeModal();
   }
 
   if (!cars.data) {
@@ -61,20 +60,29 @@ export default function AddEntryPage() {
     );
   }
 
+  const carList: { value: number; label: string }[] = [];
+  cars.data.forEach((car) =>
+    carList.push({
+      value: car.id,
+      label: car.make + " " + car.model + " (" + car.year + ")",
+    })
+  );
+
   if (!sessionData) {
     router.push("/" + id);
   } else {
     return (
       <div className="container mx-auto px-56">
         <form onSubmit={handleAddEntryForm} className="flex flex-col">
-          <div className="dark:text-white">Car Manufacturer</div>
-          <select name="car">
+          <div className="dark:text-white">Car</div>
+          <Select name="car" options={carList} />
+          {/* <select name="car">
             {cars.data.map((car) => (
               <option key={car.id} value={car.id}>
                 {car.make + " " + car.model + " (" + car.year + ")"}
               </option>
             ))}
-          </select>
+          </select> */}
 
           <div className="dark:text-white">Car Performance Points</div>
           <input
