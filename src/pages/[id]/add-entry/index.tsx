@@ -1,4 +1,3 @@
-import { Car } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -19,6 +18,8 @@ export default function AddEntryPage() {
 
   async function handleAddEntryForm(e: any) {
     e.preventDefault();
+    console.log(e);
+    console.log(e.target.car.value);
     const entry = {
       track: {
         connect: {
@@ -44,6 +45,7 @@ export default function AddEntryPage() {
         Number(e.target.seconds.value) +
         Number(e.target.milliseconds.value / 1000),
       shareCode: String(e.target.shareCode.value),
+      // as string
     };
 
     await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
@@ -59,7 +61,7 @@ export default function AddEntryPage() {
   }
 
   const carList: { value: number; label: string }[] = [];
-  cars.data.forEach((car: Car) =>
+  cars.data.forEach((car) =>
     carList.push({
       value: car.id,
       label: car.make + " " + car.model + " (" + car.year + ")",
@@ -74,6 +76,14 @@ export default function AddEntryPage() {
         <form onSubmit={handleAddEntryForm} className="flex flex-col">
           <div className="dark:text-white">Car</div>
           <Select name="car" options={carList} />
+          {/* <select name="car">
+            {cars.data.map((car) => (
+              <option key={car.id} value={car.id}>
+                {car.make + " " + car.model + " (" + car.year + ")"}
+              </option>
+            ))}
+          </select> */}
+
           <div className="dark:text-white">Car Performance Points</div>
           <input
             type="number"

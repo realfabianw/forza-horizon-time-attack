@@ -24,7 +24,7 @@ const ProfilePage = () => {
     return <div className="flex text-xl dark:text-white">{input}</div>;
   }
 
-  function handleDelete(row: Row<Entry & { track: Track; car: Car }>) {
+  function handleDelete(row: Row<Entry & { track: { name: string } }>) {
     const entryId: number = row.original.id;
     deleteEntry.mutate(entryId);
     // TODO refresh page
