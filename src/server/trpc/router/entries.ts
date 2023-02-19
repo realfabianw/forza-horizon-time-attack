@@ -1,15 +1,8 @@
-import { Storage } from "@google-cloud/storage";
 import { z } from "zod";
 import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
+import { bucket } from "../../db/gcp";
 
 import { router, publicProcedure, protectedProcedure } from "../trpc";
-
-const storage = new Storage({
-  projectId: "forza-horizon-time-attack",
-  keyFilename: "forza-horizon-time-attack-4fa3a1275e85.json",
-});
-
-const bucket = storage.bucket("fhta-gcs");
 
 export const entriesRouter = router({
   uploadImage: protectedProcedure
