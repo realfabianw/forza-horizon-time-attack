@@ -63,12 +63,37 @@ export const entriesRouter = router({
       },
     });
   }),
-  delete: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
-    return ctx.prisma.entry.deleteMany({
-      where: {
-        id: input,
-        userId: ctx.session.user.id,
-      },
-    });
-  }),
+  delete: protectedProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input }) => {
+      // Get Entry to delete
+
+      let entry = await ctx.prisma.entry.findUnique({
+        where: {
+          id: input,
+        },
+      });
+
+      if (entry) {
+        let screenshotFileName: string = String(
+          "screenshots/" + entry?.screenshotUrl.split("/").slice(-1)
+        );
+
+        if (entry?.userId == ctx.session.user.id) {
+          // Delete the screenshot on gcs
+          bucket
+            .file(screenshotFileName)
+            .delete()
+            .catch((err) => console.log(err));
+
+          // Delete the entry in the database
+          return ctx.prisma.entry.deleteMany({
+            where: {
+              id: input,
+              userId: ctx.session.user.id,
+            },
+          });
+        }
+      }
+    }),
 });
