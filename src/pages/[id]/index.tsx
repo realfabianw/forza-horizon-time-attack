@@ -8,6 +8,7 @@ import formatTime from "../../utils/timeformat";
 import { trpc } from "../../utils/trpc";
 import TableComponent from "../../components/component.table";
 import { signIn, useSession } from "next-auth/react";
+import { CameraIcon } from "@heroicons/react/24/outline";
 
 export default function TrackPage() {
   const router = useRouter();
@@ -59,6 +60,19 @@ export default function TrackPage() {
     }),
     columnHelper.accessor("shareCode", {
       header: () => header("Share Code"),
+    }),
+    columnHelper.display({
+      id: "actions",
+      header: () => header("Verification"),
+      cell: (props) =>
+        CardComponent(
+          <button
+            className="mx-auto h-full w-full"
+            onClick={() => router.push(props.row.original.screenshotUrl)}
+          >
+            <CameraIcon className="mx-auto h-6" />
+          </button>
+        ),
     }),
   ];
 

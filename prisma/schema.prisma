@@ -127,6 +127,7 @@ model Track {
 
 model Entry {
   id                Int @id @default(autoincrement())
+  timestamp         DateTime
   trackId           Int
   track             Track @relation(fields: [trackId], references: [id])
   userId            String
@@ -139,7 +140,8 @@ model Entry {
   drivetrain        String
   buildType         String
   time              Float
-  shareCode         String? @unique
+  shareCode         String?
+  screenshotUrl     String
 }
 
 
