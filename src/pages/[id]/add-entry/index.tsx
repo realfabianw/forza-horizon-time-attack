@@ -31,7 +31,7 @@ export default function AddEntryPage() {
       return;
     }
 
-    let gcsConnection: any = await uploadImage.mutateAsync(file.name);
+    const gcsConnection: any = await uploadImage.mutateAsync(file.name);
 
     console.log(gcsConnection);
 

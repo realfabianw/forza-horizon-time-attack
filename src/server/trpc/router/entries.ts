@@ -8,7 +8,7 @@ export const entriesRouter = router({
   uploadImage: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
-      let url = await bucket
+      const url = await bucket
         .file("screenshots/" + ctx.session.user.id + "_" + input)
         .getSignedUrl({
           version: "v4",
@@ -68,14 +68,14 @@ export const entriesRouter = router({
     .mutation(async ({ ctx, input }) => {
       // Get Entry to delete
 
-      let entry = await ctx.prisma.entry.findUnique({
+      const entry = await ctx.prisma.entry.findUnique({
         where: {
           id: input,
         },
       });
 
       if (entry) {
-        let screenshotFileName: string = String(
+        const screenshotFileName = String(
           "screenshots/" + entry?.screenshotUrl.split("/").slice(-1)
         );
 
