@@ -1,10 +1,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 import { HashLoader } from "react-spinners";
-import { EntryCreateOneSchema } from "../../../../../prisma/generated/schemas/createOneEntry.schema";
 import CardComponent from "../../../../components/component.card";
+import { convertTime } from "../../../../utils/timeformat";
 import { trpc } from "../../../../utils/trpc";
 
 export default function EditEntryPage() {
@@ -147,7 +147,7 @@ export default function EditEntryPage() {
                 type="number"
                 id="minutes"
                 name="minutes"
-                defaultValue={entry.data.time}
+                defaultValue={convertTime(entry.data.time).minutes}
                 className="w-full rounded bg-zinc-900 dark:text-white"
               />
             </div>
@@ -157,7 +157,7 @@ export default function EditEntryPage() {
                 type="number"
                 id="seconds"
                 name="seconds"
-                defaultValue={entry.data.time}
+                defaultValue={convertTime(entry.data.time).seconds}
                 className="w-full rounded bg-zinc-900 dark:text-white"
               />
             </div>
@@ -167,7 +167,7 @@ export default function EditEntryPage() {
                 type="number"
                 id="milliseconds"
                 name="milliseconds"
-                defaultValue={entry.data.time}
+                defaultValue={convertTime(entry.data.time).milliseconds}
                 className="w-full rounded bg-zinc-900 dark:text-white"
               />
             </div>

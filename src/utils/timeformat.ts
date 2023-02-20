@@ -1,4 +1,4 @@
-export default function formatTime(timeInSeconds: number): string {
+export function formatTime(timeInSeconds: number): string {
   const minutes = Math.floor(timeInSeconds / 60);
   const seconds = Math.floor(timeInSeconds % 60);
   const milliseconds = Math.floor(timeInSeconds * 1000) % 1000;
@@ -17,6 +17,15 @@ export default function formatTime(timeInSeconds: number): string {
   return `${minutesStr}:${secondsStr}.${millisecondsStr}`;
 }
 
-export function splitTime(time: string) {
-  return time.split(":");
+export function convertTime(seconds: number) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  const milliseconds = Math.floor(
+    (remainingSeconds - Math.floor(remainingSeconds)) * 1000
+  );
+  return {
+    minutes,
+    seconds: Math.floor(remainingSeconds),
+    milliseconds,
+  };
 }

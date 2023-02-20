@@ -1,5 +1,6 @@
-import { Car, Entry, Track } from "@prisma/client";
-import { createColumnHelper, Row } from "@tanstack/react-table";
+import type { Car, Entry, Track } from "@prisma/client";
+import type { Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -7,9 +8,9 @@ import TableComponent from "../../../components/component.table";
 import { trpc } from "../../../utils/trpc";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../../../components/component.card";
-import formatTime from "../../../utils/timeformat";
 import { useSession } from "next-auth/react";
 import PerformanceIndex from "../../../components/component.performance.index";
+import { formatTime } from "../../../utils/timeformat";
 
 const ProfilePage = () => {
   const { data: sessionData } = useSession();
