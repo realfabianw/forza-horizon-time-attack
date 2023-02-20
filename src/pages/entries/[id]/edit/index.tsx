@@ -14,67 +14,45 @@ export default function EditEntryPage() {
   const { data: sessionData } = useSession();
 
   const cars = trpc.cars.getAll.useQuery();
-  const entry = trpc.entries.getByEntryId.useQuery(id);
-  //const addEntry = trpc.entries.insert.useMutation();
+  const oldEntry = trpc.entries.getByEntryId.useQuery(id);
+  const updateEntry = trpc.entries.update.useMutation();
 
   async function handleAddEntryForm(e: any) {
     e.preventDefault();
 
-    //   if (!file) {
-    //     console.log("Please provide a file");
-    //     return;
-    //   }
+    const entry = {
+      timestamp: new Date(),
+      track: {
+        connect: {
+          id: oldEntry.data?.trackId,
+        },
+      },
+      car: {
+        connect: {
+          id: Number(e.target.car.value),
+        },
+      },
+      user: {
+        connect: {
+          id: sessionData?.user?.id,
+        },
+      },
 
-    //   const gcsConnection: any = await uploadImage.mutateAsync(file.name);
+      performancePoints: Number(e.target.performancePoints.value),
+      drivetrain: String(e.target.drivetrain.value),
+      buildType: String(e.target.buildType.value),
+      time:
+        Number(e.target.minutes.value * 60) +
+        Number(e.target.seconds.value) +
+        Number(e.target.milliseconds.value / 1000),
+      shareCode: String(e.target.shareCode.value),
+    };
 
-    //   const uploadResponse = await fetch(gcsConnection.signedUrl, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "image/jpeg", //file.type,
-    //     },
-    //     body: file,
-    //   });
-
-    //   if (uploadResponse.ok) {
-    //     console.log(gcsConnection.publicUrl);
-
-    //     const entry = {
-    //       timestamp: new Date(),
-    //       track: {
-    //         connect: {
-    //           id: id,
-    //         },
-    //       },
-    //       car: {
-    //         connect: {
-    //           id: Number(e.target.car.value),
-    //         },
-    //       },
-    //       user: {
-    //         connect: {
-    //           id: sessionData?.user?.id,
-    //         },
-    //       },
-
-    //       performancePoints: Number(e.target.performancePoints.value),
-    //       drivetrain: String(e.target.drivetrain.value),
-    //       buildType: String(e.target.buildType.value),
-    //       time:
-    //         Number(e.target.minutes.value * 60) +
-    //         Number(e.target.seconds.value) +
-    //         Number(e.target.milliseconds.value / 1000),
-    //       shareCode: String(e.target.shareCode.value),
-    //       screenshotUrl: gcsConnection.publicUrl,
-    //     };
-
-    //     await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
-    //     router.push("/" + id);
-    //   } else {
-    //     console.error("Image upload failed:", await uploadResponse.text());
-    //   }
+    await updateEntry.mutateAsync({ id, entry });
+    router.push("/users/" + entry.user.connect.id);
   }
 
-  if (!cars.data || !entry.data) {
+  if (!cars.data || !oldEntry.data) {
     return (
       <div className="align-center container mx-auto flex h-screen justify-center">
         <HashLoader className="self-center" color="white" />
@@ -99,7 +77,9 @@ export default function EditEntryPage() {
           <div className="dark:text-white">Car</div>
           <Select
             name="car"
-            defaultValue={carList.find((e) => e.value === entry!.data!.carId)}
+            defaultValue={carList.find(
+              (e) => e.value === oldEntry!.data!.carId
+            )}
             options={carList}
           />
           <div className="pt-3 dark:text-white">Car Performance Points</div>
@@ -108,14 +88,14 @@ export default function EditEntryPage() {
             id="performancePoints"
             name="performancePoints"
             className="rounded bg-zinc-900 dark:text-white"
-            defaultValue={entry.data.performancePoints}
+            defaultValue={oldEntry.data.performancePoints}
           />
           <div className="grid grid-cols-2 gap-1 pt-3">
             <div className="w-full">
               <div className="text-center dark:text-white">Drivetrain</div>
               <select
                 name="drivetrain"
-                defaultValue={entry.data.drivetrain}
+                defaultValue={oldEntry.data.drivetrain}
                 className="w-full"
               >
                 <option value="AWD">AWD</option>
@@ -127,7 +107,7 @@ export default function EditEntryPage() {
               <div className="text-center dark:text-white">Build Type</div>
               <select
                 name="buildType"
-                defaultValue={entry.data.buildType}
+                defaultValue={oldEntry.data.buildType}
                 className="w-full"
               >
                 <option value="Stock">Stock</option>
@@ -147,7 +127,7 @@ export default function EditEntryPage() {
                 type="number"
                 id="minutes"
                 name="minutes"
-                defaultValue={convertTime(entry.data.time).minutes}
+                defaultValue={convertTime(oldEntry.data.time).minutes}
                 className="w-full rounded bg-zinc-900 dark:text-white"
               />
             </div>
@@ -157,7 +137,7 @@ export default function EditEntryPage() {
                 type="number"
                 id="seconds"
                 name="seconds"
-                defaultValue={convertTime(entry.data.time).seconds}
+                defaultValue={convertTime(oldEntry.data.time).seconds}
                 className="w-full rounded bg-zinc-900 dark:text-white"
               />
             </div>
@@ -167,7 +147,7 @@ export default function EditEntryPage() {
                 type="number"
                 id="milliseconds"
                 name="milliseconds"
-                defaultValue={convertTime(entry.data.time).milliseconds}
+                defaultValue={convertTime(oldEntry.data.time).milliseconds}
                 className="w-full rounded bg-zinc-900 dark:text-white"
               />
             </div>
@@ -178,7 +158,9 @@ export default function EditEntryPage() {
             type="text"
             id="shareCode"
             name="shareCode"
-            defaultValue={entry.data.shareCode ? entry.data.shareCode : ""}
+            defaultValue={
+              oldEntry.data.shareCode ? oldEntry.data.shareCode : ""
+            }
             className="rounded bg-zinc-900 dark:text-white"
           />
           <div className="pt-5">

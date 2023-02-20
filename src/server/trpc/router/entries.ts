@@ -1,10 +1,21 @@
 import { z } from "zod";
 import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
+import { EntryUpdateInputObjectSchema } from "../../../../prisma/generated/schemas/objects/EntryUpdateInput.schema";
 import { bucket } from "../../db/gcp";
 
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const entriesRouter = router({
+  update: publicProcedure
+    .input(z.object({ id: z.number(), entry: EntryUpdateInputObjectSchema }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.entry.update({
+        where: {
+          id: input.id,
+        },
+        data: input.entry,
+      });
+    }),
   uploadImage: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

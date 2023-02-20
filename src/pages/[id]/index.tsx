@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import CardComponent from "../../components/component.card";
 import PerformanceIndex from "../../components/component.performance.index";
-import formatTime from "../../utils/timeformat";
 import { trpc } from "../../utils/trpc";
 import TableComponent from "../../components/component.table";
 import { signIn, useSession } from "next-auth/react";
 import { CameraIcon } from "@heroicons/react/24/outline";
+import { formatTime } from "../../utils/timeformat";
 
 export default function TrackPage() {
   const router = useRouter();
