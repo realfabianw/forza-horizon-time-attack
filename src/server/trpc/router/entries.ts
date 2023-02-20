@@ -30,6 +30,13 @@ export const entriesRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.entry.findMany();
   }),
+  getByEntryId: publicProcedure.input(z.number()).query(({ ctx, input }) => {
+    return ctx.prisma.entry.findUnique({
+      where: {
+        id: input,
+      },
+    });
+  }),
   getByTrackId: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.entry.findMany({
       where: {

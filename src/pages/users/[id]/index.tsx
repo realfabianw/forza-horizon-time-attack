@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import TableComponent from "../../../components/component.table";
 import { trpc } from "../../../utils/trpc";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../../../components/component.card";
 import formatTime from "../../../utils/timeformat";
 import { useSession } from "next-auth/react";
@@ -66,15 +66,28 @@ const ProfilePage = () => {
       columnHelper.display({
         id: "actions",
         header: () => header("Actions"),
-        cell: (props) =>
-          CardComponent(
-            <button
-              className="mx-auto h-full w-full"
-              onClick={() => handleDelete(props.row)}
-            >
-              <TrashIcon className="mx-auto h-6" />
-            </button>
-          ),
+        cell: (props) => (
+          <div className="flex flex-row">
+            {CardComponent(
+              <button
+                className="mx-auto h-full w-full"
+                onClick={() => handleDelete(props.row)}
+              >
+                <TrashIcon className="mx-auto h-6" />
+              </button>
+            )}
+            {CardComponent(
+              <button
+                className="mx-auto h-full w-full"
+                onClick={() =>
+                  router.push("/entries/" + props.row.original.id + "/edit")
+                }
+              >
+                <PencilIcon className="mx-auto h-6" />
+              </button>
+            )}
+          </div>
+        ),
       })
     );
   }

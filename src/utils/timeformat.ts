@@ -16,3 +16,7 @@ export default function formatTime(timeInSeconds: number): string {
 
   return `${minutesStr}:${secondsStr}.${millisecondsStr}`;
 }
+
+export function splitTime(time: string) {
+  return time.split(":");
+}
