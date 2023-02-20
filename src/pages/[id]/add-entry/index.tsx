@@ -33,8 +33,6 @@ export default function AddEntryPage() {
 
     const gcsConnection: any = await uploadImage.mutateAsync(file.name);
 
-    console.log(gcsConnection);
-
     const uploadResponse = await fetch(gcsConnection.signedUrl, {
       method: "PUT",
       headers: {
@@ -44,7 +42,6 @@ export default function AddEntryPage() {
     });
 
     if (uploadResponse.ok) {
-      console.log("Image uploaded successfully!");
       console.log(gcsConnection.publicUrl);
 
       const entry = {
