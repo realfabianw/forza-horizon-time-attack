@@ -68,15 +68,7 @@ const ProfilePage = () => {
         id: "actions",
         header: () => header("Actions"),
         cell: (props) => (
-          <div className="flex flex-row">
-            {CardComponent(
-              <button
-                className="mx-auto h-full w-full"
-                onClick={() => handleDelete(props.row)}
-              >
-                <TrashIcon className="mx-auto h-6" />
-              </button>
-            )}
+          <div className="grid grid-cols-2 gap-1">
             {CardComponent(
               <button
                 className="mx-auto h-full w-full"
@@ -85,6 +77,14 @@ const ProfilePage = () => {
                 }
               >
                 <PencilIcon className="mx-auto h-6" />
+              </button>
+            )}
+            {CardComponent(
+              <button
+                className="mx-auto h-full w-full"
+                onClick={() => handleDelete(props.row)}
+              >
+                <TrashIcon className="mx-auto h-6" />
               </button>
             )}
           </div>
