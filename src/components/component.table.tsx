@@ -73,7 +73,7 @@ export default function TableComponent(props: TableComponentProps) {
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id} className="dark:text-white">
+                    <td key={cell.id} className="text-center dark:text-white">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

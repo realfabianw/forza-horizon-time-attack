@@ -7,22 +7,22 @@ interface Index {
 const performanceClasses: Index[] = [
   {
     upper: 100,
-    class: "D ",
+    class: "D",
     color: "bg-sky-300",
   },
   {
     upper: 600,
-    class: "C ",
+    class: "C",
     color: "bg-amber-300",
   },
   {
     upper: 700,
-    class: "B ",
+    class: "B",
     color: "bg-orange-500",
   },
   {
     upper: 800,
-    class: "A ",
+    class: "A",
     color: "bg-red-600",
   },
   {
@@ -64,16 +64,14 @@ export default function PerformanceIndex(performancePoints: number) {
   const performanceClass: Index = getPerformanceClass(performancePoints);
 
   return (
-    <div>
-      <div
-        className={
-          performanceClass.color + " flex w-24 flex-row rounded-lg p-1"
-        }
-      >
-        <div className="px-2 font-bold">{performanceClass.class}</div>
-        <div className="grow rounded bg-white px-2 text-center font-bold text-black">
-          {performancePoints}
-        </div>
+    <div
+      className={
+        performanceClass.color + " grid w-24 grid-cols-3 rounded-lg p-1"
+      }
+    >
+      <div className="font-bold">{performanceClass.class}</div>
+      <div className="col-span-2 grow rounded-r bg-white text-center font-bold text-black">
+        {performancePoints}
       </div>
     </div>
   );
