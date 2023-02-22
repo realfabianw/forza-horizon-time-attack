@@ -20,14 +20,10 @@ export default function TrackPage() {
 
   const columnHelper = createColumnHelper<Entry & { user: User; car: Car }>();
 
-  function header(input: string) {
-    return <div className="flex text-xl dark:text-white">{input}</div>;
-  }
-
   const columns = [
     columnHelper.display({
       id: "user.id",
-      header: () => header("User"),
+      header: "User",
       cell: (props) => (
         <Link href={"/users/" + props.row.original.userId}>
           {props.row.original.user.name}
@@ -35,35 +31,40 @@ export default function TrackPage() {
       ),
     }),
 
-    columnHelper.accessor("car.make", {
-      header: () => header("Car Manufacturer"),
-    }),
-    columnHelper.accessor("car.model", {
-      header: () => header("Car Model"),
-    }),
-    columnHelper.accessor("car.year", {
-      header: () => header("Car Year"),
+    columnHelper.group({
+      header: "Car",
+      columns: [
+        columnHelper.accessor("car.make", {
+          header: "Make",
+        }),
+        columnHelper.accessor("car.model", {
+          header: "Model",
+        }),
+        columnHelper.accessor("car.year", {
+          header: "Year",
+        }),
+      ],
     }),
     columnHelper.accessor("drivetrain", {
-      header: () => header("Drivetrain"),
+      header: "Drivetrain",
     }),
     columnHelper.accessor("buildType", {
-      header: () => header("Build Type"),
+      header: "Build Type",
     }),
     columnHelper.accessor("performancePoints", {
-      header: () => header("Performance Points"),
+      header: "Performance Points",
       cell: (props) => PerformanceIndex(props.row.original.performancePoints),
     }),
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
-      header: () => header("Time"),
+      header: "Time",
     }),
     columnHelper.accessor("shareCode", {
-      header: () => header("Share Code"),
+      header: "Share Code",
     }),
     columnHelper.display({
       id: "actions",
-      header: () => header("Verification"),
+      header: "Verification",
       cell: (props) =>
         CardComponent(
           <button

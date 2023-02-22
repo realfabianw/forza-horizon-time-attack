@@ -33,15 +33,19 @@ export default function TableComponent(props: TableComponentProps) {
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
-                <th key={header.id} colSpan={header.colSpan}>
+                <th
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  className="border dark:text-white"
+                >
                   {header.isPlaceholder ? null : (
                     <div
-                      {...{
-                        className: header.column.getCanSort()
+                      className={
+                        header.column.getCanSort()
                           ? "cursor-pointer select-none"
-                          : "",
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
+                          : ""
+                      }
+                      onClick={header.column.getToggleSortingHandler()}
                     >
                       {flexRender(
                         header.column.columnDef.header,
@@ -59,6 +63,7 @@ export default function TableComponent(props: TableComponentProps) {
           </tr>
         ))}
       </thead>
+
       <tbody>
         {table
           .getRowModel()

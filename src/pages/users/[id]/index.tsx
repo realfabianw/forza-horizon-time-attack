@@ -21,10 +21,6 @@ const ProfilePage = () => {
 
   const columnHelper = createColumnHelper<Entry & { track: Track; car: Car }>();
 
-  function header(input: string) {
-    return <div className="flex text-xl dark:text-white">{input}</div>;
-  }
-
   function handleDelete(row: Row<Entry & { track: Track; car: Car }>) {
     const entryId: number = row.original.id;
     deleteEntry.mutate(entryId);
@@ -33,32 +29,43 @@ const ProfilePage = () => {
 
   const columns = [
     columnHelper.accessor("track.name", {
-      header: () => header("Track"),
+      header: "Track",
       cell: (props) => (
         <Link href={"/" + props.row.original.trackId}>
           {props.row.original.track.name}
         </Link>
       ),
     }),
-    columnHelper.accessor("car.make", {
-      header: () => header("Car Manufacturer"),
+    columnHelper.group({
+      header: "Car",
+      columns: [
+        columnHelper.accessor("car.make", {
+          header: "Make",
+        }),
+        columnHelper.accessor("car.model", {
+          header: "Model",
+        }),
+        columnHelper.accessor("car.year", {
+          header: "Year",
+        }),
+      ],
     }),
-    columnHelper.accessor("car.model", {
-      header: () => header("Car Model"),
+    columnHelper.accessor("drivetrain", {
+      header: "Drivetrain",
     }),
-    columnHelper.accessor("car.year", {
-      header: () => header("Car Year"),
+    columnHelper.accessor("buildType", {
+      header: "Build Type",
     }),
     columnHelper.accessor("performancePoints", {
-      header: () => header("Performance Points"),
+      header: "Performance Points",
       cell: (props) => PerformanceIndex(props.row.original.performancePoints),
     }),
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
-      header: () => header("Time"),
+      header: "Time",
     }),
     columnHelper.accessor("shareCode", {
-      header: () => header("Share Code"),
+      header: "Share Code",
     }),
   ];
 
@@ -66,7 +73,7 @@ const ProfilePage = () => {
     columns.push(
       columnHelper.display({
         id: "actions",
-        header: () => header("Actions"),
+        header: "Actions",
         cell: (props) => (
           <div className="grid grid-cols-2 gap-1">
             {CardComponent(
