@@ -62,7 +62,7 @@ export default function TableComponent(props: TableComponentProps) {
       <tbody>
         {table
           .getRowModel()
-          .rows.slice(0, 10)
+          .rows.slice(0, -1)
           .map((row) => {
             return (
               <tr key={row.id}>
