@@ -103,6 +103,7 @@ export default function AddEntryPage() {
       <div className="container mx-auto px-56">
         <form onSubmit={handleAddEntryForm} className="flex flex-col">
           <div className="dark:text-white">Car</div>
+          {/* TODO change Select from react-select to ComboBox from headlessui  */}
           <Select name="car" options={carList} />
           <div className="pt-3 dark:text-white">Car Performance Points</div>
           <input

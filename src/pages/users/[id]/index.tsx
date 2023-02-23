@@ -3,7 +3,7 @@ import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { Fragment, useState } from "react";
 import TableComponent from "../../../components/component.table";
 import { trpc } from "../../../utils/trpc";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -11,20 +11,89 @@ import CardComponent from "../../../components/component.card";
 import { useSession } from "next-auth/react";
 import PerformanceIndex from "../../../components/component.performance.index";
 import { formatTime } from "../../../utils/timeformat";
+import { Dialog, Transition } from "@headlessui/react";
 
 const ProfilePage = () => {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const id = String(router.query.id);
   const user = trpc.users.getByIdIncludeRelations.useQuery(id);
+
   const deleteEntry = trpc.entries.delete.useMutation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedEntry, setSelectedEntry]: any = useState(undefined);
 
   const columnHelper = createColumnHelper<Entry & { track: Track; car: Car }>();
 
-  function handleDelete(row: Row<Entry & { track: Track; car: Car }>) {
-    const entryId: number = row.original.id;
+  function dialog() {
+    return (
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog className="dark relative z-10" onClose={() => setIsOpen(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                {CardComponent(
+                  <Dialog.Panel className="max-w-md transform overflow-hidden p-6  transition-all">
+                    <Dialog.Title className="text-xl font-bold dark:text-white">
+                      Delete Entry
+                    </Dialog.Title>
+                    <div className="dark:text-white">
+                      Are you sure you want to delete this entry?
+                    </div>
+                    <div className="grid grid-cols-2 gap-1 pt-5">
+                      <button
+                        className="rounded bg-red-600 dark:text-white"
+                        onClick={() => handleDeleteEntry(selectedEntry)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        className="rounded bg-zinc-700 dark:text-white"
+                        onClick={() => {
+                          setIsOpen(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                )}
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    );
+  }
+
+  function handleDeleteEntry(entry: Entry & { track: Track; car: Car }) {
+    const entryId: number = entry.id;
+
+    console.log("Deleting entry: " + entryId);
+    setIsOpen(false);
+
     deleteEntry.mutate(entryId);
-    // TODO refresh page
+    router.reload();
   }
 
   const columns = [
@@ -89,7 +158,10 @@ const ProfilePage = () => {
             {CardComponent(
               <button
                 className="mx-auto h-full w-full"
-                onClick={() => handleDelete(props.row)}
+                onClick={() => {
+                  setSelectedEntry(props.row.original);
+                  setIsOpen(true);
+                }}
               >
                 <TrashIcon className="mx-auto h-6" />
               </button>
@@ -102,6 +174,7 @@ const ProfilePage = () => {
 
   return (
     <div className="container mx-auto flex flex-col justify-items-center">
+      {dialog()}
       <div className="mx-auto pb-10">
         <img
           src={user.data?.image ?? ""}
