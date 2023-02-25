@@ -64,14 +64,17 @@ export default function PerformanceIndex(performancePoints: number) {
   const performanceClass: Index = getPerformanceClass(performancePoints);
 
   return (
-    <div
-      className={
-        performanceClass.color + " grid w-24 grid-cols-3 rounded-lg p-1"
-      }
-    >
-      <div className="font-bold">{performanceClass.class}</div>
-      <div className="col-span-2 grow rounded-r bg-white text-center font-bold text-black">
-        {performancePoints}
+    <div className="flex justify-center">
+      <div
+        className={
+          performanceClass.color +
+          " grid w-24 grid-cols-3 place-self-center rounded-lg p-1"
+        }
+      >
+        <div className="font-bold">{performanceClass.class}</div>
+        <div className="col-span-2 grow rounded-r bg-white text-center font-bold text-black">
+          {performancePoints}
+        </div>
       </div>
     </div>
   );
