@@ -20,6 +20,11 @@ export default function TableComponent(props: TableComponentProps) {
   const table = useReactTable({
     data: props.data,
     columns: props.columns,
+    initialState: {
+      pagination: {
+        pageSize: 50,
+      },
+    },
     state: {
       sorting,
     },
@@ -28,8 +33,6 @@ export default function TableComponent(props: TableComponentProps) {
     onSortingChange: setSorting,
     getPaginationRowModel: getPaginationRowModel(),
   });
-
-  table.getState().pagination.pageSize = 50;
 
   return (
     <div>
