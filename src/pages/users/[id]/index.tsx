@@ -58,22 +58,29 @@ const ProfilePage = () => {
         }),
       ],
     }),
-    columnHelper.accessor("drivetrain", {
-      header: "Drivetrain",
+    columnHelper.group({
+      header: "Tune",
+      columns: [
+        columnHelper.accessor("performancePoints", {
+          header: "Performance Points",
+          cell: (props) =>
+            PerformanceIndex(props.row.original.performancePoints),
+        }),
+        columnHelper.accessor("drivetrain", {
+          header: "Drivetrain",
+        }),
+        columnHelper.accessor("buildType", {
+          header: "Build Type",
+        }),
+        columnHelper.accessor("shareCode", {
+          header: "Share Code",
+        }),
+      ],
     }),
-    columnHelper.accessor("buildType", {
-      header: "Build Type",
-    }),
-    columnHelper.accessor("performancePoints", {
-      header: "Performance Points",
-      cell: (props) => PerformanceIndex(props.row.original.performancePoints),
-    }),
+
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
       header: "Time",
-    }),
-    columnHelper.accessor("shareCode", {
-      header: "Share Code",
     }),
   ];
 
