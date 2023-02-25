@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import TableComponent from "../../../components/component.table";
 import { trpc } from "../../../utils/trpc";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { CameraIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import CardComponent from "../../../components/component.card";
 import { useSession } from "next-auth/react";
 import PerformanceIndex from "../../../components/component.performance.index";
@@ -58,22 +58,29 @@ const ProfilePage = () => {
         }),
       ],
     }),
-    columnHelper.accessor("drivetrain", {
-      header: "Drivetrain",
+    columnHelper.group({
+      header: "Tune",
+      columns: [
+        columnHelper.accessor("performancePoints", {
+          header: "Performance Points",
+          cell: (props) =>
+            PerformanceIndex(props.row.original.performancePoints),
+        }),
+        columnHelper.accessor("drivetrain", {
+          header: "Drivetrain",
+        }),
+        columnHelper.accessor("buildType", {
+          header: "Build Type",
+        }),
+        columnHelper.accessor("shareCode", {
+          header: "Share Code",
+        }),
+      ],
     }),
-    columnHelper.accessor("buildType", {
-      header: "Build Type",
-    }),
-    columnHelper.accessor("performancePoints", {
-      header: "Performance Points",
-      cell: (props) => PerformanceIndex(props.row.original.performancePoints),
-    }),
+
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
       header: "Time",
-    }),
-    columnHelper.accessor("shareCode", {
-      header: "Share Code",
     }),
   ];
 
@@ -83,7 +90,7 @@ const ProfilePage = () => {
         id: "actions",
         header: "Actions",
         cell: (props) => (
-          <div className="grid grid-cols-2 gap-1">
+          <div className="grid grid-cols-3 gap-1">
             {CardComponent(
               <button
                 className="mx-auto h-full w-full"
@@ -92,6 +99,14 @@ const ProfilePage = () => {
                 }
               >
                 <PencilIcon className="mx-auto h-6" />
+              </button>
+            )}
+            {CardComponent(
+              <button
+                className="mx-auto h-full w-full"
+                onClick={() => router.push(props.row.original.screenshotUrl)}
+              >
+                <CameraIcon className="mx-auto h-6" />
               </button>
             )}
             {CardComponent(
