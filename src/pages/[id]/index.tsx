@@ -1,4 +1,4 @@
-import { Car, Entry, User } from "@prisma/client";
+import type { Car, Entry, User } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -45,22 +45,28 @@ export default function TrackPage() {
         }),
       ],
     }),
-    columnHelper.accessor("drivetrain", {
-      header: "Drivetrain",
-    }),
-    columnHelper.accessor("buildType", {
-      header: "Build Type",
-    }),
-    columnHelper.accessor("performancePoints", {
-      header: "Performance Points",
-      cell: (props) => PerformanceIndex(props.row.original.performancePoints),
+    columnHelper.group({
+      header: "Tune",
+      columns: [
+        columnHelper.accessor("performancePoints", {
+          header: "Performance Points",
+          cell: (props) =>
+            PerformanceIndex(props.row.original.performancePoints),
+        }),
+        columnHelper.accessor("drivetrain", {
+          header: "Drivetrain",
+        }),
+        columnHelper.accessor("buildType", {
+          header: "Build Type",
+        }),
+        columnHelper.accessor("shareCode", {
+          header: "Share Code",
+        }),
+      ],
     }),
     columnHelper.accessor((row) => formatTime(row.time), {
       id: "readableTime",
       header: "Time",
-    }),
-    columnHelper.accessor("shareCode", {
-      header: "Share Code",
     }),
     columnHelper.display({
       id: "actions",
