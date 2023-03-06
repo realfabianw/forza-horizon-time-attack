@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <title>Forza Horizon Time Attack</title>
           <meta
             name="description"
-            content="Forza Horizon Time Attack is an online leaderboard for all tracks in Forza Horizon 5. Share your best times with the community."
+            content="Forza Horizon Time Attack is an online leaderboard for all official and selected Event Lab tracks in Forza Horizon 5. Share your best times with the community."
           />
           <link rel="icon" href="/favicon.ico" />
         </Head>

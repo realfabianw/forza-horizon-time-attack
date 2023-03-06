@@ -11,8 +11,9 @@ export default function Footer() {
               Forza Horizon Time Attack
             </div>
             <div className="dark:text-zinc-300">
-              Forza Horizon Time Attack is an online leaderboard for all tracks
-              in Forza Horizon 5. Share your best times with the community.
+              Forza Horizon Time Attack is an online leaderboard for all
+              official and selected Event Lab tracks in Forza Horizon 5. Share
+              your best times with the community.
             </div>
             <div className="dark:text-white">
               This project is{" "}
