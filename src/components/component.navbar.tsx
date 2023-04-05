@@ -12,7 +12,7 @@ export default function Navbar() {
             href="/"
             className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent"
           >
-            Forza Horizon Time Attack
+            FORZA HORIZON TIME ATTACK
           </Link>
         </div>
 

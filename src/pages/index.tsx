@@ -19,9 +19,23 @@ const Home: NextPage = () => {
 
   return (
     <div className="container mx-auto">
+      <div className="py-3 text-center text-3xl font-extrabold text-white">
+        EVENT LAB TRACKS
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        {tracks.data &&
+          tracks.data
+            .filter((track) => track.category == categories.data.eventlab)
+            .map((track, index) => (
+              <div key={index}>{TrackComponent(track)}</div>
+            ))}
+      </div>
+      <div className="pt-20 pb-3 text-center text-3xl font-extrabold text-white">
+        OTHER CATEGORIES
+      </div>
       <Tab.Group>
-        <Tab.List className="grid grid-cols-6 justify-between gap-3 py-10">
-          {categories.data.map((category, index) => (
+        <Tab.List className="grid grid-cols-5 justify-between gap-3 py-10">
+          {categories.data.remaingingCategories.map((category, index) => (
             <div key={index} className="h-full">
               {CardComponent(
                 <Tab className="flex h-full w-full flex-col justify-between p-1">
@@ -38,7 +52,7 @@ const Home: NextPage = () => {
           ))}
         </Tab.List>
         <Tab.Panels>
-          {categories.data.map((category, index) => (
+          {categories.data.remaingingCategories.map((category, index) => (
             <Tab.Panel key={index} className="grid grid-cols-3 gap-3">
               {tracks.data &&
                 tracks.data

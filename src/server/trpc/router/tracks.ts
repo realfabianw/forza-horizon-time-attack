@@ -54,7 +54,11 @@ export const tracksRouter = router({
       .then((data) => {
         const result: string[] = [];
         data.forEach((queryResult) => result.push(queryResult.category));
-        return result;
+        const eventLabCategory = result.pop();
+        return {
+          eventlab: eventLabCategory,
+          remaingingCategories: result,
+        };
       });
   }),
 });

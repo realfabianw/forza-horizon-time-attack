@@ -124,6 +124,25 @@ const ProfilePage = () => {
         ),
       })
     );
+  } else {
+    columns.push(
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: (props) => (
+          <div className="grid grid-cols-1 gap-1">
+            {CardComponent(
+              <button
+                className="mx-auto h-full w-full"
+                onClick={() => router.push(props.row.original.screenshotUrl)}
+              >
+                <CameraIcon className="mx-auto h-6" />
+              </button>
+            )}
+          </div>
+        ),
+      })
+    );
   }
 
   return (
