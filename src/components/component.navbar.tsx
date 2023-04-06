@@ -8,10 +8,7 @@ export default function Navbar() {
     <nav>
       <div className="flex flex-nowrap items-baseline px-10 py-1">
         <div className="grow">
-          <Link
-            href="/"
-            className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent"
-          >
+          <Link href="/" className="text-3xl font-extrabold text-white">
             FORZA HORIZON TIME ATTACK
           </Link>
         </div>
@@ -19,13 +16,13 @@ export default function Navbar() {
         {sessionData?.user && (
           <Link
             href={"/users/" + sessionData.user.id}
-            className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text pr-5 text-lg font-extrabold text-transparent"
+            className="pr-5 text-lg font-extrabold text-white"
           >
             Profile
           </Link>
         )}
         <button
-          className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-lg font-extrabold text-transparent"
+          className="text-lg font-extrabold text-white"
           onClick={sessionData ? () => signOut() : () => signIn()}
         >
           {sessionData ? "Sign out" : "Sign in"}

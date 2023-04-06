@@ -34,7 +34,7 @@ const Home: NextPage = () => {
         OTHER CATEGORIES
       </div>
       <Tab.Group>
-        <Tab.List className="grid grid-cols-5 justify-between gap-3 py-10">
+        <Tab.List className="grid grid-cols-5 justify-between gap-3 pb-10">
           {categories.data.remaingingCategories.map((category, index) => (
             <div key={index} className="h-full">
               {CardComponent(
