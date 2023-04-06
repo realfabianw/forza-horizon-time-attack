@@ -41,6 +41,34 @@ export const entriesRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.entry.findMany();
   }),
+  getLast: publicProcedure.input(z.number()).query(({ ctx, input }) => {
+    return ctx.prisma.entry.findMany({
+      orderBy: {
+        timestamp: "desc",
+      },
+      take: input,
+      include: {
+        car: {
+          select: {
+            make: true,
+            model: true,
+            year: true,
+          },
+        },
+        track: {
+          select: {
+            name: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+  }),
   getByEntryId: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.entry.findUnique({
       where: {

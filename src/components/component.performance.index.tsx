@@ -71,7 +71,9 @@ export default function PerformanceIndex(performancePoints: number) {
           " grid w-24 grid-cols-3 place-self-center rounded-lg p-1"
         }
       >
-        <div className="font-bold">{performanceClass.class}</div>
+        <div className="text-center font-bold text-white">
+          {performanceClass.class}
+        </div>
         <div className="col-span-2 grow rounded-r bg-white text-center font-bold text-black">
           {performancePoints}
         </div>
