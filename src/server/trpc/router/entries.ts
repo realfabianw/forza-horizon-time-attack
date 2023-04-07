@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
 import { EntryUpdateInputObjectSchema } from "../../../../prisma/generated/schemas/objects/EntryUpdateInput.schema";
-import { bucket } from "../../db/gcp";
+import {
+  Likelihood,
+  bucket,
+  getLikelihoodValue,
+  imageAnnotatorClient,
+} from "../../db/gcp";
 
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
@@ -16,7 +21,15 @@ export const entriesRouter = router({
         data: input.entry,
       });
     }),
-  uploadImage: protectedProcedure
+
+  /**
+   * Provides a presigned URL to upload a local file to the Google Cloud Storage.
+   * Users need to upload screenshots of their entries to validate them.
+   * Currently only supports JPEG.
+   *
+   * Input: Takes the images file name
+   */
+  generatePresignedURL: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const url = await bucket
@@ -35,6 +48,46 @@ export const entriesRouter = router({
           ctx.session.user.id +
           "_" +
           input,
+      };
+    }),
+  /**
+   * Performs a SafeSearchAnnotation analysis on a provided picture.
+   * Input: URL to picture
+   */
+  analyseImage: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const [result] = await imageAnnotatorClient.safeSearchDetection(input);
+      const detections = result.safeSearchAnnotation;
+
+      let appropriate = false;
+
+      if (
+        getLikelihoodValue(detections?.adult?.toString()) >=
+          Likelihood.POSSIBLE ||
+        getLikelihoodValue(detections?.medical?.toString()) >=
+          Likelihood.POSSIBLE ||
+        getLikelihoodValue(detections?.spoof?.toString()) >=
+          Likelihood.POSSIBLE ||
+        getLikelihoodValue(detections?.violence?.toString()) >=
+          Likelihood.POSSIBLE ||
+        getLikelihoodValue(detections?.racy?.toString()) >= Likelihood.POSSIBLE
+      ) {
+        // SafeSearch Image Annotation deemed the image to be inappropriate
+        // TODO Rename the image or instantly remove it?
+      } else {
+        appropriate = true;
+      }
+
+      return {
+        safeSearch: {
+          isAppropriate: appropriate,
+          adult: detections?.adult,
+          medical: detections?.medical,
+          spoof: detections?.spoof,
+          violence: detections?.violence,
+          racy: detections?.racy,
+        },
       };
     }),
 
@@ -141,5 +194,21 @@ export const entriesRouter = router({
           });
         }
       }
+    }),
+  /**
+   * Deletes a image from the Google Cloud Storage.
+   * Input: Public Image URL
+   */
+  deleteImage: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const screenshotFileName = String(
+        "screenshots/" + input.split("/").slice(-1)
+      );
+
+      bucket
+        .file(screenshotFileName)
+        .delete()
+        .catch((err) => console.log(err));
     }),
 });

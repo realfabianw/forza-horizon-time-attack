@@ -14,7 +14,9 @@ export default function AddEntryPage() {
   const { data: sessionData } = useSession();
 
   const cars = trpc.cars.getAll.useQuery();
-  const uploadImage = trpc.entries.uploadImage.useMutation();
+  const generatePresignedURL = trpc.entries.generatePresignedURL.useMutation();
+  const analyseImage = trpc.entries.analyseImage.useMutation();
+  const deleteImage = trpc.entries.deleteImage.useMutation();
   const addEntry = trpc.entries.insert.useMutation();
 
   const [file, setFile] = useState<File | null>(null);
@@ -31,9 +33,9 @@ export default function AddEntryPage() {
       return;
     }
 
-    const gcsConnection: any = await uploadImage.mutateAsync(file.name);
+    const presignedURL: any = await generatePresignedURL.mutateAsync(file.name);
 
-    const uploadResponse = await fetch(gcsConnection.signedUrl, {
+    const uploadResponse = await fetch(presignedURL.signedUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "image/jpeg", //file.type,
@@ -42,39 +44,49 @@ export default function AddEntryPage() {
     });
 
     if (uploadResponse.ok) {
-      console.log(gcsConnection.publicUrl);
+      console.log(presignedURL.publicUrl);
 
-      const entry = {
-        timestamp: new Date(),
-        track: {
-          connect: {
-            id: id,
-          },
-        },
-        car: {
-          connect: {
-            id: Number(e.target.car.value),
-          },
-        },
-        user: {
-          connect: {
-            id: sessionData?.user?.id,
-          },
-        },
+      const imageInsights = await analyseImage.mutateAsync(
+        presignedURL.publicUrl
+      );
 
-        performancePoints: Number(e.target.performancePoints.value),
-        drivetrain: String(e.target.drivetrain.value),
-        buildType: String(e.target.buildType.value),
-        time:
-          Number(e.target.minutes.value * 60) +
-          Number(e.target.seconds.value) +
-          Number(e.target.milliseconds.value / 1000),
-        shareCode: String(e.target.shareCode.value),
-        screenshotUrl: gcsConnection.publicUrl,
-      };
+      if (imageInsights.safeSearch.isAppropriate) {
+        const entry = {
+          timestamp: new Date(),
+          track: {
+            connect: {
+              id: id,
+            },
+          },
+          car: {
+            connect: {
+              id: Number(e.target.car.value),
+            },
+          },
+          user: {
+            connect: {
+              id: sessionData?.user?.id,
+            },
+          },
 
-      await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
-      router.push("/" + id);
+          performancePoints: Number(e.target.performancePoints.value),
+          drivetrain: String(e.target.drivetrain.value),
+          buildType: String(e.target.buildType.value),
+          time:
+            Number(e.target.minutes.value * 60) +
+            Number(e.target.seconds.value) +
+            Number(e.target.milliseconds.value / 1000),
+          shareCode: String(e.target.shareCode.value),
+          screenshotUrl: presignedURL.publicUrl,
+        };
+
+        await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
+        router.push("/" + id);
+      } else {
+        // Image is not appropriate
+        await deleteImage.mutateAsync(presignedURL.publicUrl);
+        router.push("/" + id);
+      }
     } else {
       console.error("Image upload failed:", await uploadResponse.text());
     }
