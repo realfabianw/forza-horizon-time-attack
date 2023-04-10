@@ -16,12 +16,12 @@ const ProfilePage = () => {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const id = String(router.query.id);
-  const user = trpc.users.getByIdIncludeRelations.useQuery(id);
+  const user = trpc.users.readById.useQuery(id);
 
   // Delete Entry
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEntry, setSelectedEntry]: any = useState(undefined);
-  const deleteEntry = trpc.entries.delete.useMutation();
+  const deleteEntry = trpc.entries.deleteOne.useMutation();
 
   function handleDeleteEntry(entry: Entry & { track: Track; car: Car }) {
     const entryId: number = entry.id;

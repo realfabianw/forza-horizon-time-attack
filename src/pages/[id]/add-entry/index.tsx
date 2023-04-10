@@ -17,11 +17,11 @@ export default function AddEntryPage() {
 
   const { data: sessionData } = useSession();
 
-  const cars = trpc.cars.getAll.useQuery();
+  const cars = trpc.cars.readAll.useQuery();
   const generatePresignedURL = trpc.entries.generatePresignedURL.useMutation();
   const analyseImage = trpc.entries.analyseImage.useMutation();
   const deleteImage = trpc.entries.deleteImage.useMutation();
-  const addEntry = trpc.entries.insert.useMutation();
+  const addEntry = trpc.entries.createOne.useMutation();
   const addTelemetry = trpc.telemetry.createMany.useMutation();
 
   const [imageFile, setImageFile] = useState<File | null>(null);

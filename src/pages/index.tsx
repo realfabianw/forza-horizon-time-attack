@@ -13,9 +13,9 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const tracks = trpc.tracks.getAll.useQuery();
+  const tracks = trpc.tracks.readAll.useQuery();
   const categories = trpc.tracks.getAllCategories.useQuery();
-  const lastEntries = trpc.entries.getLast.useQuery(10);
+  const lastEntries = trpc.entries.readLastEntries.useQuery(10);
   dayjs.extend(relativeTime);
 
   if (!categories.data) {
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
                 <div key={index}>{TrackComponent(track)}</div>
               ))}
         </div>
-        <div className="pt-20 pb-3 text-center text-3xl font-extrabold text-white">
+        <div className="pb-3 pt-20 text-center text-3xl font-extrabold text-white">
           ORIGINAL TRACKS
         </div>
         <Tab.Group>

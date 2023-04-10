@@ -16,7 +16,7 @@ export default function TrackPage() {
 
   const { data: sessionData } = useSession();
 
-  const track = trpc.tracks.getByIdIncludeRelations.useQuery(id);
+  const track = trpc.tracks.readFirstById.useQuery(id);
 
   const columnHelper = createColumnHelper<Entry & { user: User; car: Car }>();
 

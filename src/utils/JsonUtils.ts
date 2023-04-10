@@ -1,5 +1,5 @@
 export default function toCamel(o: any) {
-  var newO: any, origKey, newKey, value;
+  let newO: any, origKey, newKey, value;
   if (o instanceof Array) {
     return o.map(function (value) {
       if (typeof value === "object") {

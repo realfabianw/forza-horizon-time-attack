@@ -13,9 +13,9 @@ export default function EditEntryPage() {
 
   const { data: sessionData } = useSession();
 
-  const cars = trpc.cars.getAll.useQuery();
-  const oldEntry = trpc.entries.getByEntryId.useQuery(id);
-  const updateEntry = trpc.entries.update.useMutation();
+  const cars = trpc.cars.readAll.useQuery();
+  const oldEntry = trpc.entries.readAllById.useQuery(id);
+  const updateEntry = trpc.entries.updateOne.useMutation();
 
   async function handleAddEntryForm(e: any) {
     e.preventDefault();
