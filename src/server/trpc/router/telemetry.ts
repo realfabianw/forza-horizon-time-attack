@@ -1,4 +1,4 @@
-import { TelemetryCreateManySchema } from "../../../../prisma/generated/schemas/createManyTelemetry.schema";
+import { TelemetryCreateManySchema } from "../../../../prisma/generated/schemas";
 import { router, protectedProcedure } from "../trpc";
 
 export const telemetryRouter = router({

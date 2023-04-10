@@ -6,8 +6,10 @@ import {
   imageAnnotatorClient,
 } from "../../db/gcp";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
-import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
-import { EntryUpdateInputObjectSchema } from "../../../../prisma/generated/schemas/objects/EntryUpdateInput.schema";
+import {
+  EntryCreateOneSchema,
+  EntryUpdateInputObjectSchema,
+} from "../../../../prisma/generated/schemas";
 
 export const entriesRouter = router({
   createOne: protectedProcedure

@@ -7,8 +7,8 @@ generator client {
 
 generator zod {
   provider          = "prisma-zod-generator"
-  isGenerateSelect  = true
-  isGenerateInclude = true
+  // isGenerateSelect  = true
+  // isGenerateInclude = true
 }
 
 datasource db {

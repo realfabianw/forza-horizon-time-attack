@@ -9,7 +9,7 @@ import { trpc } from "../../../utils/trpc";
 import { Telemetry } from "@prisma/client";
 import Papa from "papaparse";
 import toCamel from "../../../utils/JsonUtils";
-import { TelemetryCreateManySchema } from "../../../../prisma/generated/schemas/createManyTelemetry.schema";
+import { TelemetryCreateManySchema } from "../../../../prisma/generated/schemas";
 
 export default function AddEntryPage() {
   const router = useRouter();
