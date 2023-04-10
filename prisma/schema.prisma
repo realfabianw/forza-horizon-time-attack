@@ -131,12 +131,18 @@ model Track {
 model Entry {
   id                Int @id @default(autoincrement())
   timestamp         DateTime
+
   trackId           Int
   track             Track @relation(fields: [trackId], references: [id])
+
   userId            String
   user              User @relation(fields:[userId], references: [id])
+
   carId             Int
   car               Car @relation(fields:[carId], references: [id])
+
+  telemetry         Telemetry[]
+
   // tuningSetupId     String
   // tuningSetup       TuningSetup @relation(fields:[tuningSetupId], references: [id])
   performancePoints Int
@@ -149,6 +155,100 @@ model Entry {
   @@index([trackId])
   @@index([userId])
   @@index([carId])
+}
+
+model Telemetry {
+  id                Int @id @default(autoincrement())
+
+  entryId           Int
+  entry             Entry @relation(fields: [entryId], references: [id])
+  @@index([entryId])
+
+  isRaceOn                                Boolean
+  timestampMs                             Float 
+  engineMaxRpm                            Float
+  engineIdleRpm                           Float
+  currentEngineRpm                        Float
+  accelerationX                           Float
+  accelerationY                           Float
+  accelerationZ                           Float
+  velocityX                               Float
+  velocityY                               Float
+  velocityZ                               Float
+  angularVelocityX                        Float
+  angularVelocityY                        Float
+  angularVelocityZ                        Float
+  yaw                                     Float
+  pitch                                   Float
+  roll                                    Float
+  normalizedSuspensionTravelFrontLeft     Float
+  normalizedSuspensionTravelFrontRight    Float
+  normalizedSuspensionTravelRearLeft      Float
+  normalizedSuspensionTravelRearRight     Float
+  tireSlipRatioFrontLeft                  Float
+  tireSlipRatioFrontRight                 Float
+  tireSlipRatioRearLeft                   Float
+  tireSlipRatioRearRight                  Float
+  wheelRotationSpeedFrontLeft             Float
+  wheelRotationSpeedFrontRight            Float
+  wheelRotationSpeedRearLeft              Float
+  wheelRotationSpeedRearRight             Float
+  wheelOnRumbleStripFrontLeft             Float
+  wheelOnRumbleStripFrontRight            Float
+  wheelOnRumbleStripRearLeft              Float
+  wheelOnRumbleStripRearRight             Float
+  wheelInPuddleDepthFrontLeft             Float
+  wheelInPuddleDepthFrontRight            Float
+  wheelInPuddleDepthRearLeft              Float
+  wheelInPuddleDepthRearRight             Float
+  surfaceRumbleFrontLeft                  Float
+  surfaceRumbleFrontRight                 Float
+  surfaceRumbleRearLeft                   Float
+  surfaceRumbleRearRight                  Float
+  tireSlipAngleFrontLeft                  Float
+  tireSlipAngleFrontRight                 Float
+  tireSlipAngleRearLeft                   Float
+  tireSlipAngleRearRight                  Float
+  tireCombinedSlipFrontLeft               Float
+  tireCombinedSlipFrontRight              Float
+  tireCombinedSlipRearLeft                Float
+  tireCombinedSlipRearRight               Float
+  suspensionTravelMetersFrontLeft         Float
+  suspensionTravelMetersFrontRight        Float
+  suspensionTravelMetersRearLeft          Float
+  suspensionTravelMetersRearRight         Float
+  carOrdinal                              Float
+  carClass                                Float
+  carPerformanceIndex                     Float
+  drivetrainType                          Float
+  numCylinders                            Float
+  positionX                               Float
+  positionY                               Float
+  positionZ                               Float
+  speed                                   Float
+  power                                   Float
+  torque                                  Float
+  tireTempFl                              Float
+  tireTempFr                              Float
+  tireTempRl                              Float
+  tireTempRr                              Float
+  boost                                   Float
+  fuel                                    Float
+  distance                                Float
+  bestLapTime                             Float
+  lastLapTime                             Float
+  currentLapTime                          Float
+  currentRaceTime                         Float
+  lap                                     Float
+  racePosition                            Float
+  accelerator                             Float
+  brake                                   Float
+  clutch                                  Float
+  handbrake                               Float
+  gear                                    Float
+  steer                                   Float
+  normalDrivingLine                       Float
+  normalAiBrakeDifference                 Float
 }
 
 

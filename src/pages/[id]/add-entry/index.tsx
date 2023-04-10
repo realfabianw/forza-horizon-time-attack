@@ -6,6 +6,10 @@ import { HashLoader } from "react-spinners";
 import { EntryCreateOneSchema } from "../../../../prisma/generated/schemas/createOneEntry.schema";
 import CardComponent from "../../../components/component.card";
 import { trpc } from "../../../utils/trpc";
+import { Telemetry } from "@prisma/client";
+import Papa from "papaparse";
+import toCamel from "../../../utils/JsonUtils";
+import { TelemetryCreateManySchema } from "../../../../prisma/generated/schemas/createManyTelemetry.schema";
 
 export default function AddEntryPage() {
   const router = useRouter();
@@ -18,29 +22,76 @@ export default function AddEntryPage() {
   const analyseImage = trpc.entries.analyseImage.useMutation();
   const deleteImage = trpc.entries.deleteImage.useMutation();
   const addEntry = trpc.entries.insert.useMutation();
+  const addTelemetry = trpc.telemetry.createMany.useMutation();
 
-  const [file, setFile] = useState<File | null>(null);
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const handleImageFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const selectedFile: any = event.target.files ? event.target.files[0] : null;
-    setFile(selectedFile);
+    setImageFile(selectedFile);
+  };
+
+  const [telemetry, setTelemetry] = useState<Telemetry[]>([]);
+  const handleTelemetryFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const telemetryFile: any = event.target.files
+      ? event.target.files[0]
+      : null;
+    console.log(telemetryFile);
+
+    const test = Papa.parse(telemetryFile, {
+      header: true,
+      // skipEmptyLines: true,
+      complete: function (results) {
+        handleParsedTelemetry(results);
+      },
+    });
+  };
+
+  const handleParsedTelemetry = (results: Papa.ParseResult<unknown>) => {
+    const telemetryList: Telemetry[] = [];
+    // Parse Data to Telemetry
+    for (const index in results.data) {
+      telemetryList.push(toCamel(results.data[index]));
+    }
+
+    console.log(telemetryList);
+
+    const bestLapTime = telemetryList.reduce((smallest, current) => {
+      if (current.bestLapTime < smallest) {
+        return current.bestLapTime;
+      } else {
+        return smallest;
+      }
+    }, Infinity);
+
+    console.log(bestLapTime);
+
+    // TODO Delete unnecessary lines
+
+    setTelemetry(telemetryList);
   };
 
   async function handleAddEntryForm(e: any) {
     e.preventDefault();
 
-    if (!file) {
+    if (!imageFile) {
       console.log("Please provide a file");
       return;
     }
 
-    const presignedURL: any = await generatePresignedURL.mutateAsync(file.name);
+    const presignedURL: any = await generatePresignedURL.mutateAsync(
+      imageFile.name
+    );
 
     const uploadResponse = await fetch(presignedURL.signedUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "image/jpeg", //file.type,
       },
-      body: file,
+      body: imageFile,
     });
 
     if (uploadResponse.ok) {
@@ -80,7 +131,16 @@ export default function AddEntryPage() {
           screenshotUrl: presignedURL.publicUrl,
         };
 
-        await addEntry.mutateAsync(EntryCreateOneSchema.parse({ data: entry }));
+        const createdEntry = await addEntry.mutateAsync(
+          EntryCreateOneSchema.parse({ data: entry })
+        );
+
+        telemetry.forEach((t) => (t.entryId = createdEntry.id));
+
+        await addTelemetry.mutateAsync(
+          TelemetryCreateManySchema.parse({ data: telemetry })
+        );
+
         router.push("/" + id);
       } else {
         // Image is not appropriate
@@ -187,11 +247,21 @@ export default function AddEntryPage() {
             Provide a screenshot of the event end screen:
           </div>
           <input
-            id="file-input"
+            id="image-input"
             type="file"
             accept="image/jpeg"
             className="rounded border border-gray-500 bg-zinc-900 dark:text-white"
-            onChange={handleFileChange}
+            onChange={handleImageFileChange}
+          />
+          <div className="pt-3 dark:text-white">
+            (Optional) Provide a telemetry data:
+          </div>
+          <input
+            id="telemetry-input"
+            type="file"
+            accept={".csv"}
+            className="rounded border border-gray-500 bg-zinc-900 dark:text-white"
+            onChange={handleTelemetryFileChange}
           />
           <div className="pt-5">
             {CardComponent(
